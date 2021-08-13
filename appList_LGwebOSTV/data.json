@@ -1,0 +1,386 @@
+[
+    {
+        "title": "AirPlay",
+        "id": "airplay"
+    },
+    {
+        "title": "T Mall Genie",
+        "id": "alibaba.genie"
+    },
+    {
+        "title": "T Mall Genie Music",
+        "id": "alibaba.genie.view"
+    },
+    {
+        "title": "Amazon Prime Video",
+        "id": "amazon"
+    },
+    {
+        "title": "Media plug-in",
+        "id": "amazon.alexa.view"
+    },
+    {
+        "title": "FPT Play",
+        "id": "com.fpt.fptplay"
+    },
+    {
+        "title": "VTVcab ON",
+        "id": "com.god.ganos.onplay"
+    },
+    {
+        "title": "iQIYI",
+        "id": "com.iq.app.iqiyiapp"
+    },
+    {
+        "title": "MyTV",
+        "id": "com.mytvb2c.app"
+    },
+    {
+        "title": "onme",
+        "id": "com.onme.app"
+    },
+    {
+        "title": "Sử dụng lần đầu",
+        "id": "com.palm.app.firstuse"
+    },
+    {
+        "title": "Cài đặt",
+        "id": "com.palm.app.settings"
+    },
+    {
+        "title": "ClipTV - Truyền hình Internet",
+        "id": "com.vega.app"
+    },
+    {
+        "title": "LivePlus",
+        "id": "com.webos.app.acrcard"
+    },
+    {
+        "title": "LivePlus",
+        "id": "com.webos.app.acrcomponent"
+    },
+    {
+        "title": "LivePlus",
+        "id": "com.webos.app.acrhdmi1"
+    },
+    {
+        "title": "LivePlus",
+        "id": "com.webos.app.acrhdmi2"
+    },
+    {
+        "title": "LivePlus",
+        "id": "com.webos.app.acrhdmi3"
+    },
+    {
+        "title": "LivePlus",
+        "id": "com.webos.app.acrhdmi4"
+    },
+    {
+        "title": "LivePlus",
+        "id": "com.webos.app.acroverlay"
+    },
+    {
+        "title": "Quảng cáo",
+        "id": "com.webos.app.adapp"
+    },
+    {
+        "title": "BeanBrowser",
+        "id": "com.webos.app.beanbrowser"
+    },
+    {
+        "title": "Trình duyệt web",
+        "id": "com.webos.app.browser"
+    },
+    {
+        "title": "Phát lại âm thanh Bluetooth",
+        "id": "com.webos.app.btspeakerapp"
+    },
+    {
+        "title": "Bluetooth Surround Auto Tuning",
+        "id": "com.webos.app.btsurroundautotuning"
+    },
+    {
+        "title": "Remote Management for OLED TV",
+        "id": "com.webos.app.care365"
+    },
+    {
+        "title": "TRÌNH QUẢN LÝ KÊNH",
+        "id": "com.webos.app.channeledit"
+    },
+    {
+        "title": "Dò Kênh",
+        "id": "com.webos.app.channelsetting"
+    },
+    {
+        "title": "Cài đặt điều khiển từ xa",
+        "id": "com.webos.app.connectionwizard"
+    },
+    {
+        "title": "Connected Red Button",
+        "id": "com.webos.app.crb"
+    },
+    {
+        "title": "Hỗ trợ khách hàng",
+        "id": "com.webos.app.customersupport"
+    },
+    {
+        "title": "LG Content Store",
+        "id": "com.webos.app.discovery"
+    },
+    {
+        "title": "DvrPopup",
+        "id": "com.webos.app.dvrpopup"
+    },
+    {
+        "title": "User Agreement",
+        "id": "com.webos.app.eula"
+    },
+    {
+        "title": "AV",
+        "id": "com.webos.app.externalinput.av1"
+    },
+    {
+        "title": "AV2",
+        "id": "com.webos.app.externalinput.av2"
+    },
+    {
+        "title": "Component",
+        "id": "com.webos.app.externalinput.component"
+    },
+    {
+        "title": "AV1",
+        "id": "com.webos.app.externalinput.scart"
+    },
+    {
+        "title": "Thirdparty Login",
+        "id": "com.webos.app.facebooklogin"
+    },
+    {
+        "title": "QML Factorywin",
+        "id": "com.webos.app.factorywin"
+    },
+    {
+        "title": "HDMI1",
+        "id": "com.webos.app.hdmi1"
+    },
+    {
+        "title": "HDMI2",
+        "id": "com.webos.app.hdmi2"
+    },
+    {
+        "title": "HDMI3",
+        "id": "com.webos.app.hdmi3"
+    },
+    {
+        "title": "HDMI4",
+        "id": "com.webos.app.hdmi4"
+    },
+    {
+        "title": "Home",
+        "id": "com.webos.app.home"
+    },
+    {
+        "title": "Bảng điều khiển nhà",
+        "id": "com.webos.app.homeconnect"
+    },
+    {
+        "title": "InputCommon",
+        "id": "com.webos.app.inputcommon"
+    },
+    {
+        "title": "Installation",
+        "id": "com.webos.app.installation"
+    },
+    {
+        "title": "Live Dmost",
+        "id": "com.webos.app.livedmost"
+    },
+    {
+        "title": "Live HbbTV",
+        "id": "com.webos.app.livehbbtv"
+    },
+    {
+        "title": "Thông tin chương trình TV",
+        "id": "com.webos.app.livemenu"
+    },
+    {
+        "title": "LivePick App",
+        "id": "com.webos.app.livepick"
+    },
+    {
+        "title": "Chương trình phát",
+        "id": "com.webos.app.livetv"
+    },
+    {
+        "title": "Magic Number",
+        "id": "com.webos.app.magicnum"
+    },
+    {
+        "title": "Tư cách thành viên LG",
+        "id": "com.webos.app.membership"
+    },
+    {
+        "title": "Screen Share",
+        "id": "com.webos.app.miracast"
+    },
+    {
+        "title": "Âm nhạc",
+        "id": "com.webos.app.music"
+    },
+    {
+        "title": "Thông báo",
+        "id": "com.webos.app.notificationcenter"
+    },
+    {
+        "title": "One Touch Sound Tuning",
+        "id": "com.webos.app.onetouchsoundtuning"
+    },
+    {
+        "title": "First Use-OOBE",
+        "id": "com.webos.app.oobe"
+    },
+    {
+        "title": "Ảnh & Video",
+        "id": "com.webos.app.photovideo"
+    },
+    {
+        "title": "Tìm kiếm",
+        "id": "com.webos.app.recommend"
+    },
+    {
+        "title": "Bản ghi",
+        "id": "com.webos.app.recordings"
+    },
+    {
+        "title": "Remote Service",
+        "id": "com.webos.app.remoteservice"
+    },
+    {
+        "title": "Cài đặt điều khiển từ xa",
+        "id": "com.webos.app.remotesetting"
+    },
+    {
+        "title": "Ứng dụng lập lịch ghi",
+        "id": "com.webos.app.scheduler"
+    },
+    {
+        "title": "Screen Saver",
+        "id": "com.webos.app.screensaver"
+    },
+    {
+        "title": "Trợ giúp nhanh",
+        "id": "com.webos.app.self-diagnosis"
+    },
+    {
+        "title": "Software Update",
+        "id": "com.webos.app.softwareupdate"
+    },
+    {
+        "title": "Thông báo thể thao",
+        "id": "com.webos.app.sportsteamsettings"
+    },
+    {
+        "title": "Demo cửa hàng",
+        "id": "com.webos.app.store-demo"
+    },
+    {
+        "title": "Sync Demo",
+        "id": "com.webos.app.sync-demo"
+    },
+    {
+        "title": "Music Overlay",
+        "id": "com.webos.app.systemmusic"
+    },
+    {
+        "title": "Local Control Panel",
+        "id": "com.webos.app.tvhotkey"
+    },
+    {
+        "title": "Viewer",
+        "id": "com.webos.app.tvsimpleviewer"
+    },
+    {
+        "title": "Hướng dẫn sử dụng",
+        "id": "com.webos.app.tvuserguide"
+    },
+    {
+        "title": "Tìm kiếm",
+        "id": "com.webos.app.voice"
+    },
+    {
+        "title": "Web App",
+        "id": "com.webos.app.webapphost"
+    },
+    {
+        "title": "com.webos.exampleapp.enyoapp.epg",
+        "id": "com.webos.exampleapp.enyoapp.epg"
+    },
+    {
+        "title": "com.webos.exampleapp.groupowner",
+        "id": "com.webos.exampleapp.groupowner"
+    },
+    {
+        "title": "com.webos.exampleapp.nav",
+        "id": "com.webos.exampleapp.nav"
+    },
+    {
+        "title": "com.webos.exampleapp.qmlapp.client.negative.one",
+        "id": "com.webos.exampleapp.qmlapp.client.negative.one"
+    },
+    {
+        "title": "com.webos.exampleapp.qmlapp.client.negative.two",
+        "id": "com.webos.exampleapp.qmlapp.client.negative.two"
+    },
+    {
+        "title": "com.webos.exampleapp.qmlapp.client.positive.one",
+        "id": "com.webos.exampleapp.qmlapp.client.positive.one"
+    },
+    {
+        "title": "com.webos.exampleapp.qmlapp.client.positive.two",
+        "id": "com.webos.exampleapp.qmlapp.client.positive.two"
+    },
+    {
+        "title": "com.webos.exampleapp.qmlapp.discover",
+        "id": "com.webos.exampleapp.qmlapp.discover"
+    },
+    {
+        "title": "com.webos.exampleapp.qmlapp.epg",
+        "id": "com.webos.exampleapp.qmlapp.epg"
+    },
+    {
+        "title": "com.webos.exampleapp.qmlapp.hbbtv",
+        "id": "com.webos.exampleapp.qmlapp.hbbtv"
+    },
+    {
+        "title": "com.webos.exampleapp.qmlapp.livetv",
+        "id": "com.webos.exampleapp.qmlapp.livetv"
+    },
+    {
+        "title": "com.webos.exampleapp.qmlapp.search",
+        "id": "com.webos.exampleapp.qmlapp.search"
+    },
+    {
+        "title": "System UI Example",
+        "id": "com.webos.exampleapp.systemui"
+    },
+    {
+        "title": "Google Assistant",
+        "id": "google.assistant"
+    },
+    {
+        "title": "Netflix",
+        "id": "netflix"
+    },
+    {
+        "title": "VieON",
+        "id": "vieplay.vn"
+    },
+    {
+        "title": "Galaxy Play",
+        "id": "vn.fimplus.movies"
+    },
+    {
+        "title": "YouTube",
+        "id": "youtube.leanback.v4"
+    }
+]
