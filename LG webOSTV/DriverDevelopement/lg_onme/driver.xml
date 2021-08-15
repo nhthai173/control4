@@ -1,0 +1,67 @@
+<devicedata>
+  <copyright>Copyright 2021</copyright>
+  <creator>nht</creator>
+  <manufacturer>LG</manufacturer>
+  <name>onme - LG</name>
+  <model>onme</model>
+  <created>08/13/2021 5:32 PM</created>
+  <modified>08/13/2021 5:32 PM</modified>
+  <version>101</version>
+  <control>lua_gen</control>
+  <driver>DriverWorks</driver>
+  <proxies qty="1">
+    <proxy proxybindingid="5001" name="LG onme" image_source="c4z" large_image="icons/device_lg.png" small_image="icons/device_sm.png">media_player</proxy>
+  </proxies>
+  <capabilities>
+    <navigator_display_option proxybindingid="5001">
+      <display_icons>
+        <Icon height="300" width="300">controller://driver/lg_onme/icons/device/experience_300.png</Icon>
+        <Icon height="90" width="90">controller://driver/lg_onme/icons/device/experience_90.png</Icon>
+        <Icon height="70" width="70">controller://driver/lg_onme/icons/device/experience_70.png</Icon>
+      </display_icons>
+    </navigator_display_option>
+  </capabilities>
+  <events></events>
+  <connections>
+    <connection>
+      <id>5001</id>
+      <type>2</type>
+      <connectionname>MEDIA_PLAYER</connectionname>
+      <consumer>False</consumer>
+      <linelevel>False</linelevel>
+      <classes>
+        <class>
+          <classname>MEDIA_PLAYER</classname>
+        </class>
+      </classes>
+    </connection>
+    <connection>
+      <id>2101</id>
+      <type>5</type>
+      <connectionname>LG onme</connectionname>
+      <consumer>False</consumer>
+      <linelevel>False</linelevel>
+      <classes>
+        <class>
+          <classname>RF_LG_TV_APP</classname>
+        </class>
+      </classes>
+    </connection>
+  </connections>
+  <config>
+    <documentation file="www/documentation.rtf"></documentation>
+    <script file="driver.lua" />
+    <properties>
+      <property>
+        <name>LG App</name>
+        <default>onme</default>
+        <type>STRING</type>
+        <readonly>true</readonly>
+      </property>
+    </properties>
+    <commands></commands>
+  </config>
+  <composer_categories>
+    <category>Audio/Video</category>
+  </composer_categories>
+</devicedata>
