@@ -1,0 +1,127 @@
+<devicedata>
+  <copyright>Copyright 2021 nht.  All rights reserved.</copyright>
+  <creator>nht</creator>
+  <manufacturer>nht</manufacturer>
+  <name>RCM Board</name>
+  <model>HF RCM Board</model>
+  <created>09/24/2021 10:00 AM</created>
+  <modified>10/16/2021 10:18 PM</modified>
+  <version>1</version>
+  <front>{Width=700, Height=336}\x158DVPX777-f.bmp</front>
+  <back>{Width=500, Height=250}\x158dvpx777-b.bmp</back>
+  <control>lua_gen</control>
+  <controlmethod>serial</controlmethod>
+  <driver>DriverWorks</driver>
+  <states />
+  <combo>True</combo>
+  <OnlineCategory>others</OnlineCategory>
+  <proxies qty="1">
+    <proxy>Driverworks_RCM_Board</proxy>
+  </proxies>
+  <connections>
+    <connection>
+      <id>1</id>
+      <facing>6</facing>
+      <connectionname>Serial RS-232</connectionname>
+      <type>1</type>
+      <consumer>true</consumer>
+      <audiosource>false</audiosource>
+      <videosource>false</videosource>
+      <linelevel>false</linelevel>
+      <classes>
+        <class>
+          <classname>RS_232</classname>
+        </class>
+      </classes>
+    </connection>
+  </connections>
+  <config>
+    <power_management_method>AlwaysOn</power_management_method>
+    <power_command_delay>0</power_command_delay>
+    <power_delay>0</power_delay>
+    <power_command_needed>False</power_command_needed>
+    <serialsettings>9600 8 none 1 none 232</serialsettings>
+    <script file="driver.lua" />
+    <documentation file="documentation.rtf" />
+    <properties>
+      <property>
+        <name>Driver Version</name>
+        <default>1</default>
+        <type>STRING</type>
+        <readonly>true</readonly>
+      </property>
+      <property>
+        <name>Connection</name>
+        <default>NOT CONNECTED</default>
+        <type>STRING</type>
+        <readonly>true</readonly>
+      </property>
+      <property>
+        <name>Check Connection</name>
+        <type>LIST</type>
+        <items>
+          <item>Check</item>
+        </items>
+        <default></default>
+        <readonly>false</readonly>
+      </property>
+      <property>
+        <name>Send Command</name>
+        <default>1</default>
+        <type>STRING</type>
+        <readonly>false</readonly>
+      </property>
+      <property>
+        <name>Command Delay Time</name>
+        <type>RANGED_INTEGER</type>
+        <minimum>50</minimum>
+        <maximum>1500</maximum>
+        <default>100</default>
+        <readonly>false</readonly>
+        <tooltip>Time delay between sending commands (milliseconds)</tooltip>
+      </property>
+      <property>
+        <name>Model</name>
+        <type>LIST</type>
+        <items>
+          <item>RCM64V1</item>
+        </items>
+        <default>RCM64V1</default>
+        <readonly>false</readonly>
+      </property>
+      <property>
+        <name>CON1</name>
+        <type>LIST</type>
+        <items>
+          <item>DM</item>
+          <item>MM</item>
+          <item>NOT USE</item>
+        </items>
+        <default>DM</default>
+        <readonly>false</readonly>
+      </property>
+      <property>
+        <name>CON2</name>
+        <type>LIST</type>
+        <items>
+          <item>DM</item>
+          <item>MM</item>
+          <item>NOT USE</item>
+        </items>
+        <default>DM</default>
+        <readonly>false</readonly>
+      </property>
+      <property>
+        <name>CON3</name>
+        <type>LIST</type>
+        <items>
+          <item>DM</item>
+          <item>MM</item>
+          <item>NOT USE</item>
+        </items>
+        <default>DM</default>
+        <readonly>false</readonly>
+      </property>
+    </properties>
+  </config>
+</devicedata>
