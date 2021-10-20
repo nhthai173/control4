@@ -1,7 +1,7 @@
 MAX_CON = 3 -- Maximum number of physical connector
 NUMBER_COMMAND = 3
 COMMAND = {'OPEN', 'CLOSE', 'STOP'}
-COMMAND_LABEL = {'OPEN', 'CLOSE', 'STOP'}
+COMMAND_LABEL = {'UP', 'DOWN', 'STOP'}
 START_ID = 2
 IS_CONNECTED = false
 COMMAND_DELAY = Properties['Command Delay Time'] or 100
