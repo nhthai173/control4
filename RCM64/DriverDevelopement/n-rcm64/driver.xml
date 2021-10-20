@@ -7,16 +7,16 @@
   <created>09/24/2021 10:00 AM</created>
   <modified>10/16/2021 10:18 PM</modified>
   <version>1</version>
-  <front>{Width=700, Height=336}\x158DVPX777-f.bmp</front>
-  <back>{Width=500, Height=250}\x158dvpx777-b.bmp</back>
+  <small image_source="c4z">icons/device_sm.png</small>
+  <large image_source="c4z">icons/device_lg.png</large>
   <control>lua_gen</control>
   <controlmethod>serial</controlmethod>
   <driver>DriverWorks</driver>
   <states />
-  <combo>True</combo>
+  <combo>true</combo>
   <OnlineCategory>others</OnlineCategory>
   <proxies qty="1">
-    <proxy>Driverworks_RCM_Board</proxy>
+    <proxy name="RCM Board" image_source="c4z" large_image="icons/device_lg.png" small_image="icons/device_sm.png">Driverworks_RCM_Board</proxy>
   </proxies>
   <connections>
     <connection>
@@ -41,8 +41,8 @@
     <power_delay>0</power_delay>
     <power_command_needed>False</power_command_needed>
     <serialsettings>9600 8 none 1 none 232</serialsettings>
-    <script file="driver.lua" />
-    <documentation file="documentation.rtf" />
+    <script file="driver.lua" encryption="2" />
+    <documentation file="www/documentation.rtf" />
     <properties>
       <property>
         <name>Driver Version</name>
