@@ -11,7 +11,7 @@ Please declare Analog pins as pins number
 
 #include <ArduinoJson.h>
 //#define DEBUG false
-bool DEBUG = false;
+bool DEBUG = true;
 #define BOARD_NAME "RCM64V1"
 
 //The maximum length of the array that contains the sub-elements
@@ -21,8 +21,8 @@ bool DEBUG = false;
 //Default delay time
 #define DELAY_TIME 100
 
-StaticJsonDocument<3100> doc;
-StaticJsonDocument<100> inputState;
+StaticJsonDocument<20000> doc;
+StaticJsonDocument<1000> inputState;
 char json[] = "{\"RCM64V1\":{\"PIN\":{\"OUTPUT\":[\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\",\"10\",\"11\",\"12\",\"13\",\"22\",\"23\",\"24\",\"25\",\"26\",\"27\",\"28\",\"29\",\"30\",\"31\",\"32\",\"33\",\"34\",\"35\",\"36\",\"37\",\"38\",\"39\",\"40\",\"41\",\"42\",\"43\",\"44\",\"45\",\"46\",\"47\",\"48\",\"49\",\"50\",\"51\",\"52\",\"53\",\"54\",\"55\",\"56\",\"57\"],\"OL\":\"48\"},\"DM\":{\"STATE\":{\"PIN\":\"2\",\"CLOSE\":[\"0\",\"0\"],\"STOP\":[\"0\",\"1\"],\"OPEN\":[\"1\",\"0\"],\"NONE\":[\"1\",\"1\"]},\"RULE\":{\"OPEN\":[\"0\",\"1\"],\"CLOSE\":[\"0\",\"1\"],\"STOP\":[\"0\",\"1\"],\"NONE\":[\"0\",\"1\"]},\"CON1\":{\"C1\":[\"31\",\"29\"],\"C2\":[\"33\",\"27\"],\"C3\":[\"35\",\"25\"],\"C4\":[\"37\",\"23\"],\"C5\":[\"39\",\"47\"],\"C6\":[\"41\",\"49\"],\"C7\":[\"43\",\"51\"],\"C8\":[\"45\",\"53\"]},\"CON3\":{\"C1\":[\"52\",\"22\"],\"C2\":[\"50\",\"24\"],\"C3\":[\"48\",\"26\"],\"C4\":[\"46\",\"28\"],\"C5\":[\"44\",\"30\"],\"C6\":[\"42\",\"32\"],\"C7\":[\"40\",\"34\"],\"C8\":[\"38\",\"36\"]},\"CON2\":{\"C1\":[\"5\",\"6\"],\"C2\":[\"4\",\"7\"],\"C3\":[\"3\",\"8\"],\"C4\":[\"2\",\"9\"],\"C5\":[\"54\",\"10\"],\"C6\":[\"55\",\"11\"],\"C7\":[\"56\",\"12\"],\"C8\":[\"57\",\"13\"]}},\"MM\":{\"STATE\":{\"PIN\":\"2\",\"OPEN\":[\"0\",\"0\"],\"CLOSE\":[\"1\",\"0\"],\"STOP\":[\"1\",\"1\"],\"NONE\":[\"1\",\"1\"]},\"RULE\":{\"DELAY\":\"100\",\"OPEN\":[\"0\",\"DELAY\",\"1\"],\"CLOSE\":[\"1\",\"DELAY\",\"0\"],\"STOP\":[\"1\",\"DELAY\",\"0\"],\"NONE\":[\"1\",\"DELAY\",\"0\"]},\"CON1\":{\"C1\":[\"31\",\"29\"],\"C2\":[\"33\",\"27\"],\"C3\":[\"35\",\"25\"],\"C4\":[\"37\",\"23\"],\"C5\":[\"39\",\"47\"],\"C6\":[\"41\",\"49\"],\"C7\":[\"43\",\"51\"],\"C8\":[\"45\",\"53\"]},\"CON3\":{\"C1\":[\"52\",\"22\"],\"C2\":[\"50\",\"24\"],\"C3\":[\"48\",\"26\"],\"C4\":[\"46\",\"28\"],\"C5\":[\"44\",\"30\"],\"C6\":[\"42\",\"32\"],\"C7\":[\"40\",\"34\"],\"C8\":[\"38\",\"36\"]},\"CON2\":{\"C1\":[\"5\",\"6\"],\"C2\":[\"4\",\"7\"],\"C3\":[\"3\",\"8\"],\"C4\":[\"2\",\"9\"],\"C5\":[\"54\",\"10\"],\"C6\":[\"55\",\"11\"],\"C7\":[\"56\",\"12\"],\"C8\":[\"57\",\"13\"]}}}}";
 
 void setup() {
@@ -44,8 +44,8 @@ void setup() {
   for(int i=0; i<ol.toInt(); i++){
     String pinNum = doc[BOARD_NAME]["PIN"]["OUTPUT"][i];
     dbg("Output: "+pinNum);
-    pinMode(pinNum.toInt(), OUTPUT);
-    digitalWrite(pinNum.toInt(), 1);
+    //pinMode(pinNum.toInt(), OUTPUT);
+    //digitalWrite(pinNum.toInt(), 1);
     delay(DELAY_TIME);
   }
 
@@ -55,7 +55,7 @@ void setup() {
     for(int i=0; i<il.toInt(); i++){
       String pinNum = doc[BOARD_NAME]["PIN"]["INPUT"][i];
       dbg("Input: "+pinNum);
-      pinMode(pinNum.toInt(), INPUT_PULLUP);
+      //pinMode(pinNum.toInt(), INPUT_PULLUP);
       String pinLabel = doc[BOARD_NAME]["INPUT"][pinNum];
       inputState[pinLabel] = 0;
       sendToC4(pinLabel);
@@ -83,6 +83,7 @@ void dbg(String content){
 
 
 void syncState(){
+  /*
   String inputValid = doc[BOARD_NAME]["INPUT"];
   if(inputValid != "null"){
       String il = doc[BOARD_NAME]["PIN"]["IL"];
@@ -99,6 +100,7 @@ void syncState(){
         }
       }
   }
+  */
 }
 
 
@@ -122,19 +124,21 @@ void sendToC4(String p){
 
 void loop() {
   
-  if(Serial.available() > 0){
-    
+  if(Serial.available()){
+    //unsigned long sttime = millis();
     String input = Serial.readString();
+    dbg(input);
     String command[MAL];
     int commandIndex = 0, st = input.indexOf("<"), en = input.indexOf(">");
-    
+
+    //unsigned long stttime = millis();
     while(en > st && st > -1){
       command[commandIndex] = input.substring(st+1, en);
       commandIndex++;
       st = input.indexOf("<", st+1);
       en = input.indexOf(">", en+1);
     }
-
+    
     for(int i=0; i<commandIndex; i++){
       String subCommand[MAL];
       int separator[MAL];
@@ -192,7 +196,19 @@ void loop() {
         Serial.println("INVALID COMMAND");
       }
     }
-    
+/*
+    unsigned long endtime = millis();
+    Serial.print("Start: ");
+    Serial.println(sttime);
+    Serial.print("Start computing: ");
+    Serial.println(stttime);
+    Serial.print("end: ");
+    Serial.println(endtime);
+    Serial.print("Total duration: ");
+    Serial.println(endtime - sttime);
+    Serial.print("Computing duration: ");
+    Serial.println(endtime - stttime);
+*/
   }
 
 
