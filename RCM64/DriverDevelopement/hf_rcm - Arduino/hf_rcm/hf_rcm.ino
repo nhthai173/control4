@@ -16,7 +16,7 @@ bool DEBUG = false;
 
 //The maximum length of the array that contains the sub-elements
 //after splitting the string received from serial
-#define MAL 48
+#define MAL 100
 
 //Default delay time
 #define DELAY_TIME 100
@@ -181,7 +181,7 @@ void loop() {
               String pinState = doc[subCommand[0]][subCommand[1]]["STATE"][subCommand[4]][rule.toInt()];
               if(pinNum != "null" && pinState != "null"){
                 dbg("digitalWrite("+pinNum+", "+pinState+")");
-                //digitalWrite(pinNum.toInt(), pinState.toInt());
+                digitalWrite(pinNum.toInt(), pinState.toInt());
               }
             }
           }else{

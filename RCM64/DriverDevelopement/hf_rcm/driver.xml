@@ -1,12 +1,12 @@
 <devicedata>
-  <copyright>Copyright 2021 nht.  All rights reserved.</copyright>
-  <creator>nht</creator>
-  <manufacturer>nht</manufacturer>
-  <name>RCM Board</name>
-  <model>HF RCM Board</model>
+  <copyright>Copyright 2021 Home Flow.  All rights reserved.</copyright>
+  <creator>Home Flow</creator>
+  <manufacturer>Home Flow</manufacturer>
+  <name>Home Flow RCM Board</name>
+  <model>HF-RCM</model>
   <created>09/24/2021 10:00 AM</created>
   <modified>10/16/2021 10:18 PM</modified>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <small image_source="c4z">icons/device_sm.png</small>
   <large image_source="c4z">icons/device_lg.png</large>
   <control>lua_gen</control>
@@ -46,9 +46,19 @@
     <properties>
       <property>
         <name>Driver Version</name>
-        <default>1.0.1</default>
+        <default>1.0.2</default>
         <type>STRING</type>
         <readonly>true</readonly>
+      </property>
+      <property>
+        <name>Debug Mode</name>
+        <type>LIST</type>
+        <items>
+          <item>ON</item>
+          <item>OFF</item>
+        </items>
+        <default>OFF</default>
+        <readonly>false</readonly>
       </property>
       <property>
         <name>Connection</name>
@@ -56,6 +66,8 @@
         <type>STRING</type>
         <readonly>true</readonly>
       </property>
+
+      <!--
       <property>
         <name>Check Connection</name>
         <type>LIST</type>
@@ -71,12 +83,13 @@
         <type>STRING</type>
         <readonly>false</readonly>
       </property>
+      -->
       <property>
         <name>Command Delay Time</name>
         <type>RANGED_INTEGER</type>
         <minimum>50</minimum>
-        <maximum>1500</maximum>
-        <default>100</default>
+        <maximum>2000</maximum>
+        <default>50</default>
         <readonly>false</readonly>
         <tooltip>Time delay between sending commands (milliseconds)</tooltip>
       </property>
@@ -87,7 +100,7 @@
           <item>RCM64V1</item>
         </items>
         <default>RCM64V1</default>
-        <readonly>false</readonly>
+        <readonly>true</readonly>
       </property>
       <property>
         <name>CON1</name>
@@ -97,7 +110,7 @@
           <item>MM</item>
           <item>NOT USE</item>
         </items>
-        <default>DM</default>
+        <default>NOT USE</default>
         <readonly>false</readonly>
       </property>
       <property>
@@ -108,7 +121,7 @@
           <item>MM</item>
           <item>NOT USE</item>
         </items>
-        <default>DM</default>
+        <default>NOT USE</default>
         <readonly>false</readonly>
       </property>
       <property>
@@ -119,7 +132,7 @@
           <item>MM</item>
           <item>NOT USE</item>
         </items>
-        <default>DM</default>
+        <default>NOT USE</default>
         <readonly>false</readonly>
       </property>
     </properties>
