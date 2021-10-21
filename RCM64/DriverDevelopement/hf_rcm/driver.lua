@@ -162,8 +162,8 @@ function Model.change()
 	-- Remove all connections
 	for k,v in pairs(Current) do
 		if (v) then
-			for i=1, NUMBER_COMMAND, 1 do
-				C4:RemoveDynamicBinding(Current[k]['ID'][i])
+			for k1, v1 in pairs(Current[k]['ID']) do
+				C4:RemoveDynamicBinding(v1)
 			end
 		end
 	end
@@ -256,6 +256,8 @@ function OnPropertyChanged (strProperty)
 		SendCommand(value)
 	elseif (strProperty == 'Command Delay Time') then
 		COMMAND_DELAY = value
+	elseif (strProperty == 'Debug Mode') then
+		DEBUG_MODE = value
 	end
 end
 
