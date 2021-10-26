@@ -6,7 +6,7 @@
   <model>HF-RCM</model>
   <created>09/24/2021 10:00 AM</created>
   <modified>10/16/2021 10:18 PM</modified>
-  <version>1.0.2</version>
+  <version>1.0.2.1</version>
   <small image_source="c4z">icons/device_sm.png</small>
   <large image_source="c4z">icons/device_lg.png</large>
   <control>lua_gen</control>
@@ -46,7 +46,7 @@
     <properties>
       <property>
         <name>Driver Version</name>
-        <default>1.0.2</default>
+        <default>1.0.2.1</default>
         <type>STRING</type>
         <readonly>true</readonly>
       </property>
@@ -62,12 +62,11 @@
       </property>
       <property>
         <name>Connection</name>
-        <default>NOT CONNECTED</default>
+        <default>NOT CHECK</default>
         <type>STRING</type>
         <readonly>true</readonly>
       </property>
 
-      <!--
       <property>
         <name>Check Connection</name>
         <type>LIST</type>
@@ -77,6 +76,8 @@
         <default></default>
         <readonly>false</readonly>
       </property>
+
+      <!--
       <property>
         <name>Send Command</name>
         <default>1</default>

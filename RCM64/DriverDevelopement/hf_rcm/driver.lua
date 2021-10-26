@@ -126,7 +126,7 @@ end
 function SendCommand(cmdstr)
 	table.insert(SEND_COMMAND, cmdstr)
 	if(Timer['SendCommand'] == nil or Timer['SendCommand'] == 0)then
-		Timer['SendCommand'] = Model.AddTimer(Timer['SendCommand'], 100, 'MILLISECONDS', true)
+		Timer['SendCommand'] = Model.AddTimer(Timer['SendCommand'], COMMAND_DELAY, 'MILLISECONDS', true)
 	end
 end
 
@@ -237,8 +237,8 @@ function OnDriverLateInit ()
 	Model.boardInit(Properties['Model'])
 
 	--  check connection interval
-	Timer['CheckConnection'] = Model.AddTimer (Timer['CheckConnection'], 10, 'SECONDS', true)
-	Timer['SendCommand'] = Model.AddTimer(Timer['SendCommand'], 100, 'MILLISECONDS', true)
+	-- Timer['CheckConnection'] = Model.AddTimer (Timer['CheckConnection'], 45, 'SECONDS', true)
+	Timer['SendCommand'] = Model.AddTimer(Timer['SendCommand'], COMMAND_DELAY, 'MILLISECONDS', true)
 end
 
 
@@ -251,7 +251,7 @@ function OnPropertyChanged (strProperty)
         Model.change()
     elseif (strProperty == 'Check Connection') then
 		CheckConnection()
-		C4:UpdateProperty (strProperty, ' ')
+		C4:UpdateProperty (strProperty, 'NOT CONNECTED')
 	elseif (strProperty == 'Send Command') then
 		SendCommand(value)
 	elseif (strProperty == 'Command Delay Time') then
@@ -267,8 +267,12 @@ end
 
 
 function CheckConnection()
-	IS_CONNECTED = false
-	SendCommand('<CHECK_CONNECTION>')
+	if(SEND_COMMAND[1] == nil)then
+		IS_CONNECTED = false
+		SendCommand('<CHECK_CONNECTION>')
+		Timer['CheckConnection'] = Model.AddTimer (Timer['CheckConnection'], 30, 'SECONDS')
+		Timer['CheckConnectionFail'] = Model.AddTimer (Timer['CheckConnection'], 3, 'SECONDS')
+	end
 end
 
 
@@ -279,10 +283,11 @@ end
 function OnTimerExpired (idTimer)
 
 	if (idTimer == Timer['CheckConnection']) then
-		if(IS_CONNECTED == false)then
-			C4:UpdateProperty ('Connection', 'NOT CONNECTED')
-		end
-		CheckConnection()
+		C4:UpdateProperty ('Connection', 'NOT CHECK')
+		--[[if(IS_CONNECTED == false)then
+			C4:UpdateProperty ('Connection', 'NOT CHECK')
+		end]]--
+		-- CheckConnection()
 	elseif (idTimer == Timer['SendCommand']) then
 		if(SEND_COMMAND[1] ~= nil)then
 			DBG('Send to Serial: '..SEND_COMMAND[1])
@@ -290,6 +295,10 @@ function OnTimerExpired (idTimer)
 			table.remove(SEND_COMMAND, 1)
 		else
 			Timer['SendCommand'] = Model.KillTimer(Timer['SendCommand'])
+		end
+	elseif (idTimer == Timer['CheckConnectionFail']) then
+		if(IS_CONNECTED == false)then
+			C4:UpdateProperty ('Connection', 'NOT CONNECTED')
 		end
 	end
 end

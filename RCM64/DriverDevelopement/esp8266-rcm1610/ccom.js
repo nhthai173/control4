@@ -1,5 +1,5 @@
 var
-    times = 24,
+    times = 8,
     command =  'CLOSE',
     inline = '',
     onecom = '',
@@ -9,8 +9,12 @@ var
 
 function ff(con, o) {
     for(i=1; i<=o; i++){
-        console.log(`<RCM64V1,MM,CON${con},C${i},NONE>`)
-        console.log(`<RCM64V1,MM,CON${con},C${i},${command}>`)
+        console.log(`<RCM64V1,DM,CON${con},C${i},NONE>`)
+        console.log(`<RCM64V1,DM,CON${con},C${i},${command}>`)
+        if (100 < Math.floor(Math.random()*100)) {
+            console.log('<CHECK_CONNECTION>')
+            total++
+        }
         total += 2
     }
 }
@@ -26,10 +30,10 @@ while(times > 0){
 }
 
 console.log('\n\nTotal commmands: '+total+'\n\n')
+// <CHECK_CONNECTION>
 
 
-
-
+//<RCM64V1,DM,{"PORT":["CON1"], "CON1": ["C1", "C2", "C3"]},CLOSE>
 
 
 /*
