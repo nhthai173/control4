@@ -32,6 +32,6 @@ Changes in version 1.0.1
 - Driver icon
 - Encrypt driver
 
-## 1.0.0 - 19/10/2021 19:03
+## [1.0.0](https://github.com/nhthai173/control4/tree/main/RCM64/Published/Previous%20version/1.0.0) - 19/10/2021 19:03
 
 First release
