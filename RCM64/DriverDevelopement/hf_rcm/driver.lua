@@ -1,5 +1,8 @@
+DRIVER_VERSION = '1.0.2.18'
+
 MAX_CON = 3 -- Maximum number of physical connector
 START_ID = 2 -- Dynamic Binding id start from
+ID_LIST = {} -- List of IDs used
 IS_CONNECTED = false -- Is C4 and Arduino working well
 
 COMMAND_DELAY = Properties['Command Delay Time'] or 100 -- Time delay between sending commands
@@ -72,7 +75,7 @@ function PrintTable(tbl)
 
         -- Check the value type
         if type(v) == "table" then
-            result = result..table_to_string(v)
+            result = result..PrintTable(v)
         elseif type(v) == "boolean" then
             result = result..tostring(v)
         else
@@ -94,7 +97,7 @@ end
 function DBG(str)
 	if(DEBUG_MODE == 'ON')then
 		if(type(str) == 'table')then
-			PrintTable(str)
+			print(PrintTable(str))
 		else
 			print(str)
 		end
@@ -117,6 +120,57 @@ function SplitString (inputstr, sep)
 	end
 	return t
 end
+
+
+
+
+
+
+
+-- Check if the table is empty
+function IsTableEmpty(d)
+	local isEmpty = true
+	for k,v in pairs(d) do
+		isEmpty = false
+		break
+	end
+    return isEmpty
+end
+
+
+
+
+
+
+--  ID generator function
+function ID_LIST.genID()
+	local validID = false
+	local startID = START_ID
+	while validID == false do
+		if(ID_LIST[startID] and ID_LIST[startID] > 0)then
+			startID = startID + 1
+		elseif (not ID_LIST[startID] or ID_LIST[startID] == 0) then
+			validID = true
+			ID_LIST.addID(startID)
+			return startID
+		end
+		-- Fail safe
+		if startID > 900 then
+			validID = true
+			ID_LIST.addID(999)
+			return 999
+		end
+	end
+end
+
+function ID_LIST.addID(id)
+	ID_LIST[id] = id
+end
+
+function ID_LIST.removeID(id)
+	ID_LIST[id] = 0
+end
+
 
 
 
@@ -160,6 +214,7 @@ end
 function Model.change()
 
 	-- Remove all connections
+	--[[
 	for k,v in pairs(Current) do
 		if (v) then
 			for k1, v1 in pairs(Current[k]['ID']) do
@@ -167,25 +222,52 @@ function Model.change()
 			end
 		end
 	end
+	]]--
 
-	Current = {}
-	local start_id = START_ID
+	-- Current = {}
 	local model = Properties['Model']
 	for k, v in pairs(Channel[model]) do
 		Model[k] = Properties[k]
-		if(Model[k] ~= "NOT USE")then
+		if(Model[k] == 'NOT USE')then
+			-- remove connections
+			for k1,v1 in pairs(Current) do
+				if (Current[k1]['ID'] and string.match(k1, '^'..k..',C?%d+$')) then
+					for k2, v2 in pairs(Current[k1]['ID']) do
+						C4:RemoveDynamicBinding(v2)
+						ID_LIST.removeID(v2)
+					end
+					Current[k1] = {}
+				end
+			end
+		else	
 			for k1, v1 in pairs(Channel[model][k][Model[k]]['CHANNEL']) do
-				Current[k..',C'..v1] = {
-					DATA =  model..','..Model[k]..','..k..',',
-					LAST_SEND = "OPEN",
-					STATE = {},
-					ID = {}
-				}
-				for i=1, Channel[model][k][Model[k]]['NUMBER_COMMAND'], 1 do
-					C4:AddDynamicBinding(start_id, "CONTROL", true, k..' - Channel '..v1..' - '..Channel[model][k][Model[k]]['COMMAND_LABEL'][i], "RELAY", false, false)
-					table.insert(Current[k..',C'..v1]['ID'], start_id)
-					table.insert(Current[k..',C'..v1]['STATE'], 'C'..v1..','..Channel[model][k][Model[k]]['COMMAND'][i])
-					start_id = start_id + 1
+				if(Current[k..',C'..v1])then
+					if(Current[k..',C'..v1]['MODEL'] and Current[k..',C'..v1]['MODEL'] ~= Model[k])then
+						-- Remove connections
+						if (Current[k..',C'..v1]['ID']) then
+							for k2, v2 in pairs(Current[k..',C'..v1]['ID']) do
+								C4:RemoveDynamicBinding(v2)
+								ID_LIST.removeID(v2)
+							end
+						end
+						Current[k..',C'..v1] = {}
+					end
+				end
+				if(not Current[k..',C'..v1] or IsTableEmpty(Current[k..',C'..v1]) == true)then
+					Current[k..',C'..v1] = {}
+					Current[k..',C'..v1] = {
+						MODEL = Model[k],
+						DATA =  model..','..Model[k]..','..k..',',
+						LAST_SEND = "OPEN",
+						STATE = {},
+						ID = {}
+					}
+					for i=1, Channel[model][k][Model[k]]['NUMBER_COMMAND'], 1 do
+						local start_id = ID_LIST.genID()
+						C4:AddDynamicBinding(start_id, "CONTROL", true, k..' - Channel '..v1..' - '..Channel[model][k][Model[k]]['COMMAND_LABEL'][i], "RELAY", false, false)
+						table.insert(Current[k..',C'..v1]['ID'], start_id)
+						table.insert(Current[k..',C'..v1]['STATE'], 'C'..v1..','..Channel[model][k][Model[k]]['COMMAND'][i])
+					end
 				end
 			end
 		end
@@ -228,6 +310,14 @@ end
 
 
 
+function OnDriverInit()
+	C4:UpdateProperty ('Driver Version', DRIVER_VERSION)
+end
+
+
+
+
+
 
 function OnDriverLateInit ()
 	Model.KillTimer()
@@ -251,7 +341,7 @@ function OnPropertyChanged (strProperty)
         Model.change()
     elseif (strProperty == 'Check Connection') then
 		CheckConnection()
-		C4:UpdateProperty (strProperty, 'NOT CONNECTED')
+		DBG(ID_LIST)
 	elseif (strProperty == 'Send Command') then
 		SendCommand(value)
 	elseif (strProperty == 'Command Delay Time') then
@@ -269,9 +359,10 @@ end
 function CheckConnection()
 	if(SEND_COMMAND[1] == nil)then
 		IS_CONNECTED = false
+		C4:UpdateProperty ('Connection', 'CHECKING')
 		SendCommand('<CHECK_CONNECTION>')
 		Timer['CheckConnection'] = Model.AddTimer (Timer['CheckConnection'], 30, 'SECONDS')
-		Timer['CheckConnectionFail'] = Model.AddTimer (Timer['CheckConnection'], 3, 'SECONDS')
+		Timer['CheckConnectionFail'] = Model.AddTimer (Timer['CheckConnectionFail'], 3, 'SECONDS')
 	end
 end
 

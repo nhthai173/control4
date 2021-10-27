@@ -2,11 +2,11 @@
   <copyright>Copyright 2021 Home Flow.  All rights reserved.</copyright>
   <creator>Home Flow</creator>
   <manufacturer>Home Flow</manufacturer>
-  <name>Home Flow RCM Board</name>
-  <model>HF-RCM</model>
+  <name>Home Flow RCM64</name>
+  <model>HF-RCM64</model>
   <created>09/24/2021 10:00 AM</created>
-  <modified>10/16/2021 10:18 PM</modified>
-  <version>1.0.2.1</version>
+  <modified>10/27/2021 04:18 PM</modified>
+  <version>1.0.2.18</version>
   <small image_source="c4z">icons/device_sm.png</small>
   <large image_source="c4z">icons/device_lg.png</large>
   <control>lua_gen</control>
@@ -46,7 +46,7 @@
     <properties>
       <property>
         <name>Driver Version</name>
-        <default>1.0.2.1</default>
+        <default>1</default>
         <type>STRING</type>
         <readonly>true</readonly>
       </property>
