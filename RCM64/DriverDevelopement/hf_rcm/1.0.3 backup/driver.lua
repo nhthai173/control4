@@ -1,15 +1,19 @@
-DRIVER_VERSION = '1.0.2.18'
+DRIVER_VERSION = '1.0.3'
 
 MAX_CON = 3 -- Maximum number of physical connector
 START_ID = 2 -- Dynamic Binding id start from
-ID_LIST = {} -- List of IDs used
 IS_CONNECTED = false -- Is C4 and Arduino working well
 
-COMMAND_DELAY = Properties['Command Delay Time'] or 100 -- Time delay between sending commands
+-- COMMAND_DELAY = Properties['Command Delay Time'] or 100
+COMMAND_DELAY = 100 -- group delay
+SEND_COMMAND_DELAY = 500 -- Time delay between sending commands
 DEBUG_MODE = Properties['Debug Mode'] or 'OFF' -- Debug mode: ON and OFF
 
-Model = {} -- Contains functions and board type of each CON
+Model = {} -- Contains functions and board type of each CON\
+
 Current = {} -- Contains data for current setting
+Current.ID = {} -- List of IDs used
+
 Timer = {} -- Contains all timer
 SEND_COMMAND = {} -- Contains commands waiting to be sent
 
@@ -66,28 +70,45 @@ Channel = {
 
 -- print table (for debug mode)
 function PrintTable(tbl)
-    local result = "{"
+    local result = ""
+    local kc = 0
+    local isArray = false
+    
     for k, v in pairs(tbl) do
-        -- Check the key type (ignore any numerical keys - assume its an array)
-        if type(k) == "string" then
-            result = result.."[\""..k.."\"]".."="
+        kc = kc + 1
+        if (type(k) == "string") then
+            if kc == 1 then
+                result = "{"..result    
+            end
+            result = result.."\""..k.."\""..":"
+        elseif kc == 1 then
+            result = "["..result
+            isArray = true
         end
-
-        -- Check the value type
         if type(v) == "table" then
             result = result..PrintTable(v)
         elseif type(v) == "boolean" then
+            result = result..tostring(v)
+        elseif type(v) == "function" then
+            result = result.."\"function\""
+        elseif type(v) == "number" then
             result = result..tostring(v)
         else
             result = result.."\""..v.."\""
         end
         result = result..","
     end
-    -- Remove leading commas from the result
+    
     if result ~= "" then
         result = result:sub(1, result:len()-1)
+        if isArray == false then
+            result = result.."}"
+        else
+            result = result.."]"
+        end
     end
-    return result.."}"
+    
+    return result
 end
 
 
@@ -130,9 +151,11 @@ end
 -- Check if the table is empty
 function IsTableEmpty(d)
 	local isEmpty = true
-	for k,v in pairs(d) do
-		isEmpty = false
-		break
+	if(d ~= nil)then
+		for k,v in pairs(d) do
+			isEmpty = false
+			break
+		end
 	end
     return isEmpty
 end
@@ -142,33 +165,41 @@ end
 
 
 
---  ID generator function
-function ID_LIST.genID()
+
+-- ID generator function
+-- type: type of connection,
+-- id: channel id,
+-- stid: state id,
+function Current.ID.genID(type, id, stid)
 	local validID = false
 	local startID = START_ID
 	while validID == false do
-		if(ID_LIST[startID] and ID_LIST[startID] > 0)then
+		if(IsTableEmpty(Current['ID']['B'..startID]) == false)then
 			startID = startID + 1
-		elseif (not ID_LIST[startID] or ID_LIST[startID] == 0) then
+		else
 			validID = true
-			ID_LIST.addID(startID)
+			Current.ID.addID(type, startID, id, stid)
 			return startID
 		end
 		-- Fail safe
 		if startID > 900 then
 			validID = true
-			ID_LIST.addID(999)
+			Current.ID.addID(type, 999, id, stid)
 			return 999
 		end
 	end
 end
 
-function ID_LIST.addID(id)
-	ID_LIST[id] = id
+function Current.ID.addID(type, idnum, id, stid)
+	Current['ID']['B'..idnum] = {
+		ID = id,
+		STATE_ID = stid,
+		TYPE = type
+	}
 end
 
-function ID_LIST.removeID(id)
-	ID_LIST[id] = 0
+function Current.ID.removeID(idnum)
+	Current['ID']['B'..idnum] = {}
 end
 
 
@@ -184,8 +215,74 @@ function SendCommand(cmdstr)
 	end
 end
 
+-- After the COMMAND_DELAY period since SendCommand was run,
+-- commands that have the same state (e.g. OPEN / CLOSE / STOP) from different channels from one or more different CONs will be grouped.
+-- Note: commands are grouped only when they have the same model, type and state
+function SendCommandGroup()
+
+	if(SEND_COMMAND[1] ~= nil)then
+		local tg = SplitString(SEND_COMMAND[1])
+		local st = tg[5]
+		local model = tg[1]
+		local type = tg[2]
+		local o1c = true
+		local gcom = {
+			PORT = {}
+		}
+		for k, v in pairs(SEND_COMMAND) do
+			local tgg = SplitString(v)
+			if(st ~= tgg[5] or model ~= tgg[1] or type ~= tgg[2])then
+				o1c = false
+				break
+			end
+		end
+		if (o1c == true and SEND_COMMAND[2] ~= nil) then
+			for k, v in pairs(SEND_COMMAND) do
+				local tgg = SplitString(v)
+				local ccon = tgg[3]
+				local cch = tgg[4]
+				if (gcom[ccon])then
+					table.insert(gcom[ccon], cch)
+				else
+					gcom[ccon] = {cch}
+				end
+			end
+			for k, v in pairs(gcom) do
+				if(k ~= 'PORT')then
+					table.insert(gcom['PORT'], k)
+				end
+			end
+			SEND_COMMAND = {}
+			-- SendCommand('<'..model..','..type..','..C4:JsonEncode(gcom)..','..st..'>')
+			SendCMD('<'..model..','..type..','..PrintTable(gcom)..','..st..'>')
+		else -- not found group
+			SendCMD(SEND_COMMAND[1])
+			table.remove(SEND_COMMAND, 1)
+		end
+	else
+		Timer['SendCommand'] = Model.KillTimer(Timer['SendCommand'])
+	end
+
+end
 
 
+function SendCommandNGroup()
+	if(SEND_COMMAND[1] ~= nil)then
+		DBG('Send to Serial: '..SEND_COMMAND[1])
+		C4:SendToSerial(1,SEND_COMMAND[1]..'\n')
+		table.remove(SEND_COMMAND, 1)
+	else
+		Timer['SendCommandNoGroup'] = Model.KillTimer(Timer['SendCommandNoGroup'])
+	end
+end
+
+
+
+
+function SendCMD(cmd)
+	DBG('Send to Serial: '..cmd)
+	C4:SendToSerial(1,cmd..'\n')
+end
 
 
 
@@ -212,19 +309,6 @@ end
 
 -- On Property Changed
 function Model.change()
-
-	-- Remove all connections
-	--[[
-	for k,v in pairs(Current) do
-		if (v) then
-			for k1, v1 in pairs(Current[k]['ID']) do
-				C4:RemoveDynamicBinding(v1)
-			end
-		end
-	end
-	]]--
-
-	-- Current = {}
 	local model = Properties['Model']
 	for k, v in pairs(Channel[model]) do
 		Model[k] = Properties[k]
@@ -234,28 +318,29 @@ function Model.change()
 				if (Current[k1]['ID'] and string.match(k1, '^'..k..',C?%d+$')) then
 					for k2, v2 in pairs(Current[k1]['ID']) do
 						C4:RemoveDynamicBinding(v2)
-						ID_LIST.removeID(v2)
+						Current.ID.removeID(v2)
 					end
 					Current[k1] = {}
 				end
 			end
 		else	
 			for k1, v1 in pairs(Channel[model][k][Model[k]]['CHANNEL']) do
-				if(Current[k..',C'..v1])then
-					if(Current[k..',C'..v1]['MODEL'] and Current[k..',C'..v1]['MODEL'] ~= Model[k])then
+				local cID = k..',C'..v1
+				if(Current[cID])then
+					if(Current[cID]['MODEL'] and Current[cID]['MODEL'] ~= Model[k])then
 						-- Remove connections
-						if (Current[k..',C'..v1]['ID']) then
-							for k2, v2 in pairs(Current[k..',C'..v1]['ID']) do
+						if (Current[cID]['ID']) then
+							for k2, v2 in pairs(Current[cID]['ID']) do
 								C4:RemoveDynamicBinding(v2)
-								ID_LIST.removeID(v2)
+								Current.ID.removeID(v2)
 							end
 						end
-						Current[k..',C'..v1] = {}
+						Current[cID] = {}
 					end
 				end
-				if(not Current[k..',C'..v1] or IsTableEmpty(Current[k..',C'..v1]) == true)then
-					Current[k..',C'..v1] = {}
-					Current[k..',C'..v1] = {
+				if(not Current[cID] or IsTableEmpty(Current[cID]) == true)then
+					Current[cID] = {}
+					Current[cID] = {
 						MODEL = Model[k],
 						DATA =  model..','..Model[k]..','..k..',',
 						LAST_SEND = "OPEN",
@@ -263,10 +348,10 @@ function Model.change()
 						ID = {}
 					}
 					for i=1, Channel[model][k][Model[k]]['NUMBER_COMMAND'], 1 do
-						local start_id = ID_LIST.genID()
+						local start_id = Current.ID.genID('OUTPUT', cID, i)
 						C4:AddDynamicBinding(start_id, "CONTROL", true, k..' - Channel '..v1..' - '..Channel[model][k][Model[k]]['COMMAND_LABEL'][i], "RELAY", false, false)
-						table.insert(Current[k..',C'..v1]['ID'], start_id)
-						table.insert(Current[k..',C'..v1]['STATE'], 'C'..v1..','..Channel[model][k][Model[k]]['COMMAND'][i])
+						table.insert(Current[cID]['ID'], start_id)
+						table.insert(Current[cID]['STATE'], 'C'..v1..','..Channel[model][k][Model[k]]['COMMAND'][i])
 					end
 				end
 			end
@@ -326,8 +411,6 @@ function OnDriverLateInit ()
 	end
 	Model.boardInit(Properties['Model'])
 
-	--  check connection interval
-	-- Timer['CheckConnection'] = Model.AddTimer (Timer['CheckConnection'], 45, 'SECONDS', true)
 	Timer['SendCommand'] = Model.AddTimer(Timer['SendCommand'], COMMAND_DELAY, 'MILLISECONDS', true)
 end
 
@@ -341,9 +424,10 @@ function OnPropertyChanged (strProperty)
         Model.change()
     elseif (strProperty == 'Check Connection') then
 		CheckConnection()
-		DBG(ID_LIST)
 	elseif (strProperty == 'Send Command') then
-		SendCommand(value)
+		if (value and value ~= "") then
+			SendCommand(value)
+		end
 	elseif (strProperty == 'Command Delay Time') then
 		COMMAND_DELAY = value
 	elseif (strProperty == 'Debug Mode') then
@@ -375,22 +459,14 @@ function OnTimerExpired (idTimer)
 
 	if (idTimer == Timer['CheckConnection']) then
 		C4:UpdateProperty ('Connection', 'NOT CHECK')
-		--[[if(IS_CONNECTED == false)then
-			C4:UpdateProperty ('Connection', 'NOT CHECK')
-		end]]--
-		-- CheckConnection()
-	elseif (idTimer == Timer['SendCommand']) then
-		if(SEND_COMMAND[1] ~= nil)then
-			DBG('Send to Serial: '..SEND_COMMAND[1])
-			C4:SendToSerial(1,SEND_COMMAND[1])
-			table.remove(SEND_COMMAND, 1)
-		else
-			Timer['SendCommand'] = Model.KillTimer(Timer['SendCommand'])
-		end
+		Timer['CheckConnection'] = Model.KillTimer(Timer['CheckConnection'])
 	elseif (idTimer == Timer['CheckConnectionFail']) then
 		if(IS_CONNECTED == false)then
 			C4:UpdateProperty ('Connection', 'NOT CONNECTED')
+			Timer['CheckConnectionFail'] = Model.KillTimer(Timer['CheckConnectionFail'])
 		end
+	elseif (idTimer == Timer['SendCommand']) then
+		SendCommandGroup()
 	end
 end
 
@@ -404,8 +480,9 @@ function ReceivedFromSerial(idBinding, strData)
 	if(serialData[1] == 'CHECK_CONNECTION' and serialData[2] ~= nil)then
 		C4:UpdateProperty ('Connection', 'CONNECTED')
 		IS_CONNECTED = true
+		Timer['CheckConnection'] = Model.AddTimer (Timer['CheckConnection'], 30, 'SECONDS')
 	end
-
+	
 end
 
 
@@ -459,6 +536,7 @@ function ReceivedFromProxy (idBinding, strCommand, tParams)
 
 	if(idBinding > 1)then
 		
+		--[[
 		for k, v in pairs(Current) do
 			local state = nil
 			for k1, v1 in pairs(Current[k]['ID']) do
@@ -467,6 +545,7 @@ function ReceivedFromProxy (idBinding, strCommand, tParams)
 					break
 				end
 			end
+
 			if(state ~= nil and Current[k]['DATA'] ~= nil and strCommand ~= Current[k]['LAST_SEND'])then
 				if(strCommand == "OPEN")then
 					Current[k]['LAST_SEND'] = "OPEN"
@@ -481,6 +560,29 @@ function ReceivedFromProxy (idBinding, strCommand, tParams)
 				break
 			end
 		end
+		]]
+
+		
+		if(IsTableEmpty(Current['ID']['B'..idBinding]) == false)then
+			local cID = Current['ID']['B'..idBinding]['ID']
+			local stid = Current['ID']['B'..idBinding]['STATE_ID']
+			local state = Current[cID]['STATE'][stid]
+			local data = Current[cID]['DATA']
+
+			if(state ~= nil and data ~= nil and strCommand ~= Current[cID]['LAST_SEND'])then
+				if(strCommand == "OPEN")then
+					Current[cID]['LAST_SEND'] = "OPEN"
+					local c = string.match(state, '^C%d')
+					local data2send = '<'..data..c..',NONE'..'>'
+					SendCommand(data2send)
+				elseif (strCommand == "CLOSE") then
+					Current[cID]['LAST_SEND'] = "CLOSE"
+					local data2send = '<'..data..state..'>'
+					SendCommand(data2send)
+				end
+			end
+		end
+		
 
 	end
 	

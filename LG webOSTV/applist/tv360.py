@@ -21,6 +21,34 @@ for status in client.register(store):
 print(store)   # {'client_key': 'ACCESS_TOKEN_FROM_TV'}
 
 app = ApplicationControl(client)
+
+launch_info = app.launch(
+    {"id": 'com.viettel.media.tv360'},
+    content_id="ch=2"
+)
+
+isOpened = True
+while app.get_current() != 'com.viettel.media.tv360':
+    time.sleep(1)
+    isOpened = False
+
+if isOpened == False:
+    time.sleep(5)
+
+inp = InputControl(client)
+inp.connect_input()
+
+inp.num_7()
+time.sleep(1)
+inp.num_4()
+
+
+
+
+
+
+
+"""
 apps = app.list_apps()
 applist = []
 for x in apps:
@@ -31,3 +59,4 @@ for x in apps:
     
 applist = json.dumps(applist)
 print(applist)
+"""

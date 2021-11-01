@@ -31,15 +31,4 @@ while(times > 0){
 
 console.log('\n\nTotal commmands: '+total+'\n\n')
 // <CHECK_CONNECTION>
-
-
 //<RCM64V1,DM,{"PORT":["CON1"], "CON1": ["C1", "C2", "C3"]},CLOSE>
-
-
-/*
-console.log('------------------')
-console.log(onecom)
-console.log('------------------')
-console.log(inline)
-console.log('------------------')
-*/

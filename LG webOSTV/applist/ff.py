@@ -20,7 +20,16 @@ for status in client.register(store):
 
 print(store)   # {'client_key': 'ACCESS_TOKEN_FROM_TV'}
 
-app = ApplicationControl(client)
+system = SystemControl(client)
+system.notify("Thái nè. Đây là thông báo từ con DELL ghẻ nèk")
+
+
+
+
+
+
+
+"""
 apps = app.list_apps()
 applist = []
 for x in apps:
@@ -31,3 +40,4 @@ for x in apps:
     
 applist = json.dumps(applist)
 print(applist)
+"""

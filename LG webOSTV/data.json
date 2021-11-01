@@ -1,386 +1,487 @@
 [
     {
         "title": "AirPlay",
-        "id": "airplay"
+        "id": "airplay",
+        "icon": "http://192.168.1.117:3000/resources/f8404e33e5de834d15d01686a09c7e55ed9c84ce/AirPlay_Icon-77x77.png"
     },
     {
         "title": "T Mall Genie",
-        "id": "alibaba.genie"
+        "id": "alibaba.genie",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "T Mall Genie Music",
-        "id": "alibaba.genie.view"
+        "id": "alibaba.genie.view",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Amazon Prime Video",
-        "id": "amazon"
+        "id": "amazon",
+        "icon": "http://192.168.1.117:3000/resources/2a9477e5f4d6282238eaca454130ff0ee1dfecc4/aiv_white_80x80.png"
     },
     {
         "title": "Media plug-in",
-        "id": "amazon.alexa.view"
+        "id": "amazon.alexa.view",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
+    },
+    {
+        "title": "Apple TV",
+        "id": "com.apple.appletv",
+        "icon": "http://192.168.1.117:3000/resources/d59490389a641d4bf55f3facc352d8bcc1c51b9a/AppleTV_80x80.png"
     },
     {
         "title": "FPT Play",
-        "id": "com.fpt.fptplay"
+        "id": "com.fpt.fptplay",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "VTVcab ON",
-        "id": "com.god.ganos.onplay"
+        "id": "com.god.ganos.onplay",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "iQIYI",
-        "id": "com.iq.app.iqiyiapp"
+        "id": "com.iq.app.iqiyiapp",
+        "icon": "http://192.168.1.117:3000/resources/ce28250172af9fe7a8bd13f501733f5f7d4b953c/iqiyi_logo.png"
     },
     {
         "title": "MyTV",
-        "id": "com.mytvb2c.app"
-    },
-    {
-        "title": "onme",
-        "id": "com.onme.app"
+        "id": "com.mytvb2c.app",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Sử dụng lần đầu",
-        "id": "com.palm.app.firstuse"
+        "id": "com.palm.app.firstuse",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Cài đặt",
-        "id": "com.palm.app.settings"
+        "id": "com.palm.app.settings",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "ClipTV - Truyền hình Internet",
-        "id": "com.vega.app"
+        "id": "com.vega.app",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
+    },
+    {
+        "title": "TV360",
+        "id": "com.viettel.media.tv360",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "LivePlus",
-        "id": "com.webos.app.acrcard"
+        "id": "com.webos.app.acrcard",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "LivePlus",
-        "id": "com.webos.app.acrcomponent"
+        "id": "com.webos.app.acrcomponent",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "LivePlus",
-        "id": "com.webos.app.acrhdmi1"
+        "id": "com.webos.app.acrhdmi1",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "LivePlus",
-        "id": "com.webos.app.acrhdmi2"
+        "id": "com.webos.app.acrhdmi2",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "LivePlus",
-        "id": "com.webos.app.acrhdmi3"
+        "id": "com.webos.app.acrhdmi3",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "LivePlus",
-        "id": "com.webos.app.acrhdmi4"
+        "id": "com.webos.app.acrhdmi4",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "LivePlus",
-        "id": "com.webos.app.acroverlay"
+        "id": "com.webos.app.acroverlay",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Quảng cáo",
-        "id": "com.webos.app.adapp"
+        "id": "com.webos.app.adapp",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "BeanBrowser",
-        "id": "com.webos.app.beanbrowser"
+        "id": "com.webos.app.beanbrowser",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Trình duyệt web",
-        "id": "com.webos.app.browser"
+        "id": "com.webos.app.browser",
+        "icon": "http://192.168.1.117:3000/resources/3c44b45ca4045792d5d7b0433bf93f42d004fcc3/webbrowser_icon.png"
     },
     {
         "title": "Phát lại âm thanh Bluetooth",
-        "id": "com.webos.app.btspeakerapp"
+        "id": "com.webos.app.btspeakerapp",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Bluetooth Surround Auto Tuning",
-        "id": "com.webos.app.btsurroundautotuning"
+        "id": "com.webos.app.btsurroundautotuning",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Remote Management for OLED TV",
-        "id": "com.webos.app.care365"
+        "id": "com.webos.app.care365",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "TRÌNH QUẢN LÝ KÊNH",
-        "id": "com.webos.app.channeledit"
+        "id": "com.webos.app.channeledit",
+        "icon": "http://192.168.1.117:3000/resources/0579260aed7630d26d1f9609ef85d215c32245c1/icon.png"
     },
     {
         "title": "Dò Kênh",
-        "id": "com.webos.app.channelsetting"
+        "id": "com.webos.app.channelsetting",
+        "icon": "http://192.168.1.117:3000/resources/fc2a7abcbf46a502dd78632aa03648741ca22940/icon.png"
     },
     {
         "title": "Cài đặt điều khiển từ xa",
-        "id": "com.webos.app.connectionwizard"
+        "id": "com.webos.app.connectionwizard",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Connected Red Button",
-        "id": "com.webos.app.crb"
+        "id": "com.webos.app.crb",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Hỗ trợ khách hàng",
-        "id": "com.webos.app.customersupport"
+        "id": "com.webos.app.customersupport",
+        "icon": "http://192.168.1.117:3000/resources/d9b185bb87fb4dfa26a59282a396c90aa7dc2340/setting_80x80.png"
     },
     {
         "title": "LG Content Store",
-        "id": "com.webos.app.discovery"
+        "id": "com.webos.app.discovery",
+        "icon": "http://192.168.1.117:3000/resources/5bdba84266d2b87a600904ea29e88f50dfea7650/lgstore.png"
     },
     {
         "title": "DvrPopup",
-        "id": "com.webos.app.dvrpopup"
+        "id": "com.webos.app.dvrpopup",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "User Agreement",
-        "id": "com.webos.app.eula"
+        "id": "com.webos.app.eula",
+        "icon": "http://192.168.1.117:3000/resources/d9b185bb87fb4dfa26a59282a396c90aa7dc2340/setting_80x80.png"
     },
     {
         "title": "AV",
-        "id": "com.webos.app.externalinput.av1"
+        "id": "com.webos.app.externalinput.av1",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "AV2",
-        "id": "com.webos.app.externalinput.av2"
+        "id": "com.webos.app.externalinput.av2",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Component",
-        "id": "com.webos.app.externalinput.component"
+        "id": "com.webos.app.externalinput.component",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "AV1",
-        "id": "com.webos.app.externalinput.scart"
+        "id": "com.webos.app.externalinput.scart",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Thirdparty Login",
-        "id": "com.webos.app.facebooklogin"
+        "id": "com.webos.app.facebooklogin",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "QML Factorywin",
-        "id": "com.webos.app.factorywin"
+        "id": "com.webos.app.factorywin",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "HDMI1",
-        "id": "com.webos.app.hdmi1"
+        "id": "com.webos.app.hdmi1",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "HDMI2",
-        "id": "com.webos.app.hdmi2"
+        "id": "com.webos.app.hdmi2",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "HDMI3",
-        "id": "com.webos.app.hdmi3"
+        "id": "com.webos.app.hdmi3",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "HDMI4",
-        "id": "com.webos.app.hdmi4"
+        "id": "com.webos.app.hdmi4",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Home",
-        "id": "com.webos.app.home"
+        "id": "com.webos.app.home",
+        "icon": "http://192.168.1.117:3000/resources/fc2a7abcbf46a502dd78632aa03648741ca22940/icon.png"
     },
     {
         "title": "Bảng điều khiển nhà",
-        "id": "com.webos.app.homeconnect"
+        "id": "com.webos.app.homeconnect",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "InputCommon",
-        "id": "com.webos.app.inputcommon"
+        "id": "com.webos.app.inputcommon",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Installation",
-        "id": "com.webos.app.installation"
+        "id": "com.webos.app.installation",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Live Dmost",
-        "id": "com.webos.app.livedmost"
+        "id": "com.webos.app.livedmost",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Live HbbTV",
-        "id": "com.webos.app.livehbbtv"
+        "id": "com.webos.app.livehbbtv",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Thông tin chương trình TV",
-        "id": "com.webos.app.livemenu"
+        "id": "com.webos.app.livemenu",
+        "icon": "http://192.168.1.117:3000/resources/fc2a7abcbf46a502dd78632aa03648741ca22940/icon.png"
     },
     {
         "title": "LivePick App",
-        "id": "com.webos.app.livepick"
+        "id": "com.webos.app.livepick",
+        "icon": ""
     },
     {
         "title": "Chương trình phát",
-        "id": "com.webos.app.livetv"
+        "id": "com.webos.app.livetv",
+        "icon": "http://192.168.1.117:3000/resources/63598a4cd7396eb7c7e159d6ee81465e40d9936a/icon_livetv_80.png"
     },
     {
         "title": "Magic Number",
-        "id": "com.webos.app.magicnum"
+        "id": "com.webos.app.magicnum",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Tư cách thành viên LG",
-        "id": "com.webos.app.membership"
+        "id": "com.webos.app.membership",
+        "icon": "http://192.168.1.117:3000/resources/b7628efb0731f777f7ebe7dc007ca4d645a266ae/icon.png"
     },
     {
         "title": "Screen Share",
-        "id": "com.webos.app.miracast"
+        "id": "com.webos.app.miracast",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Âm nhạc",
-        "id": "com.webos.app.music"
+        "id": "com.webos.app.music",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Thông báo",
-        "id": "com.webos.app.notificationcenter"
+        "id": "com.webos.app.notificationcenter",
+        "icon": "http://192.168.1.117:3000/resources/beba96ce7731fed1512138e3c1ae35a644dc2048/icon_notification.png"
     },
     {
         "title": "One Touch Sound Tuning",
-        "id": "com.webos.app.onetouchsoundtuning"
+        "id": "com.webos.app.onetouchsoundtuning",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "First Use-OOBE",
-        "id": "com.webos.app.oobe"
+        "id": "com.webos.app.oobe",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Ảnh & Video",
-        "id": "com.webos.app.photovideo"
+        "id": "com.webos.app.photovideo",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Tìm kiếm",
-        "id": "com.webos.app.recommend"
+        "id": "com.webos.app.recommend",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Bản ghi",
-        "id": "com.webos.app.recordings"
+        "id": "com.webos.app.recordings",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Remote Service",
-        "id": "com.webos.app.remoteservice"
+        "id": "com.webos.app.remoteservice",
+        "icon": "http://192.168.1.117:3000/resources/eed0fc2b64dd7bce294a37f5651597b6e16b767d/icon.png"
     },
     {
         "title": "Cài đặt điều khiển từ xa",
-        "id": "com.webos.app.remotesetting"
+        "id": "com.webos.app.remotesetting",
+        "icon": ""
     },
     {
         "title": "Ứng dụng lập lịch ghi",
-        "id": "com.webos.app.scheduler"
+        "id": "com.webos.app.scheduler",
+        "icon": "http://192.168.1.117:3000/resources/cb5e6ff332bd52fe9381f929c25b38a362bdc74e/icon_scheduler.png"
     },
     {
         "title": "Screen Saver",
-        "id": "com.webos.app.screensaver"
+        "id": "com.webos.app.screensaver",
+        "icon": ""
     },
     {
         "title": "Trợ giúp nhanh",
-        "id": "com.webos.app.self-diagnosis"
+        "id": "com.webos.app.self-diagnosis",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Software Update",
-        "id": "com.webos.app.softwareupdate"
+        "id": "com.webos.app.softwareupdate",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Thông báo thể thao",
-        "id": "com.webos.app.sportsteamsettings"
+        "id": "com.webos.app.sportsteamsettings",
+        "icon": "http://192.168.1.117:3000/resources/c26560507acc64463a2ed63a090b14db0e261da0/toast_sports.png"
     },
     {
         "title": "Demo cửa hàng",
-        "id": "com.webos.app.store-demo"
+        "id": "com.webos.app.store-demo",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Sync Demo",
-        "id": "com.webos.app.sync-demo"
+        "id": "com.webos.app.sync-demo",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Music Overlay",
-        "id": "com.webos.app.systemmusic"
+        "id": "com.webos.app.systemmusic",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Local Control Panel",
-        "id": "com.webos.app.tvhotkey"
+        "id": "com.webos.app.tvhotkey",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Viewer",
-        "id": "com.webos.app.tvsimpleviewer"
+        "id": "com.webos.app.tvsimpleviewer",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Hướng dẫn sử dụng",
-        "id": "com.webos.app.tvuserguide"
+        "id": "com.webos.app.tvuserguide",
+        "icon": "http://192.168.1.117:3000/resources/80e29c5d68c21d93bc53bf5bb9076079725259a1/icon_userguide.png"
     },
     {
         "title": "Tìm kiếm",
-        "id": "com.webos.app.voice"
+        "id": "com.webos.app.voice",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Web App",
-        "id": "com.webos.app.webapphost"
+        "id": "com.webos.app.webapphost",
+        "icon": "http://192.168.1.117:3000/resources/191d590cc216ee6db3e53edcff9e7a1ecddb71d3/icon_80x80.png"
     },
     {
         "title": "com.webos.exampleapp.enyoapp.epg",
-        "id": "com.webos.exampleapp.enyoapp.epg"
+        "id": "com.webos.exampleapp.enyoapp.epg",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "com.webos.exampleapp.groupowner",
-        "id": "com.webos.exampleapp.groupowner"
+        "id": "com.webos.exampleapp.groupowner",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "com.webos.exampleapp.nav",
-        "id": "com.webos.exampleapp.nav"
+        "id": "com.webos.exampleapp.nav",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "com.webos.exampleapp.qmlapp.client.negative.one",
-        "id": "com.webos.exampleapp.qmlapp.client.negative.one"
+        "id": "com.webos.exampleapp.qmlapp.client.negative.one",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "com.webos.exampleapp.qmlapp.client.negative.two",
-        "id": "com.webos.exampleapp.qmlapp.client.negative.two"
+        "id": "com.webos.exampleapp.qmlapp.client.negative.two",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "com.webos.exampleapp.qmlapp.client.positive.one",
-        "id": "com.webos.exampleapp.qmlapp.client.positive.one"
+        "id": "com.webos.exampleapp.qmlapp.client.positive.one",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "com.webos.exampleapp.qmlapp.client.positive.two",
-        "id": "com.webos.exampleapp.qmlapp.client.positive.two"
+        "id": "com.webos.exampleapp.qmlapp.client.positive.two",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "com.webos.exampleapp.qmlapp.discover",
-        "id": "com.webos.exampleapp.qmlapp.discover"
+        "id": "com.webos.exampleapp.qmlapp.discover",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "com.webos.exampleapp.qmlapp.epg",
-        "id": "com.webos.exampleapp.qmlapp.epg"
+        "id": "com.webos.exampleapp.qmlapp.epg",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "com.webos.exampleapp.qmlapp.hbbtv",
-        "id": "com.webos.exampleapp.qmlapp.hbbtv"
+        "id": "com.webos.exampleapp.qmlapp.hbbtv",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "com.webos.exampleapp.qmlapp.livetv",
-        "id": "com.webos.exampleapp.qmlapp.livetv"
+        "id": "com.webos.exampleapp.qmlapp.livetv",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "com.webos.exampleapp.qmlapp.search",
-        "id": "com.webos.exampleapp.qmlapp.search"
+        "id": "com.webos.exampleapp.qmlapp.search",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "System UI Example",
-        "id": "com.webos.exampleapp.systemui"
+        "id": "com.webos.exampleapp.systemui",
+        "icon": "http://192.168.1.117:3000/resources/1c092af896629489730f3465411eeb43a25322d6/icon_80.png"
     },
     {
         "title": "Google Assistant",
-        "id": "google.assistant"
+        "id": "google.assistant",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Netflix",
-        "id": "netflix"
+        "id": "netflix",
+        "icon": "http://192.168.1.117:3000/resources/b58e8851e1b02b8063df5646b254eb53b6664acf/SMALL_APP_ICON.png"
     },
     {
         "title": "VieON",
-        "id": "vieplay.vn"
+        "id": "vieplay.vn",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "Galaxy Play",
-        "id": "vn.fimplus.movies"
+        "id": "vn.fimplus.movies",
+        "icon": "http://192.168.1.117:3000/resources/e18eead8a9fae1db2bbffeea72adf841d7330364/icon.png"
     },
     {
         "title": "YouTube",
-        "id": "youtube.leanback.v4"
+        "id": "youtube.leanback.v4",
+        "icon": "http://192.168.1.117:3000/resources/d20debc77f07dd48fefb199da06e26b28f543790/yt_lg_80x80.png"
     }
 ]
