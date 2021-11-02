@@ -325,6 +325,7 @@ function Model.change()
 
 		if(k == 'INPUT')then
 			if(Model[k] == 'NOT USE')then
+				Current['INPUT'] = Model[k]
 				for k1, v1 in pairs(Current['ID']) do
 					if(type(Current['ID'][k1]) == "table" and Current['ID'][k1]['TYPE'] == 'INPUT')then
 						-- remove first letter "B"
@@ -337,6 +338,14 @@ function Model.change()
 				for k1, v1 in pairs(Channel[model][k]) do
 					if(v1 and (Current['INPUT'] == nil or Model[k] ~= Current['INPUT']) and k1 == Model[k])then
 						Current['INPUT'] = Model[k]
+						for k2, v2 in pairs(Current['ID']) do
+							if(type(Current['ID'][k2]) == "table" and Current['ID'][k2]['TYPE'] == 'INPUT')then
+								-- remove first letter "B"
+								local idbd = tonumber(string.sub(k2, 2))
+								C4:RemoveDynamicBinding(idbd)
+								Current.ID.removeID(idbd)
+							end
+						end
 						for k2, v2 in pairs(Channel[model][k][k1]) do
 							local idbd = Current.ID.genID('INPUT', v2)
 							C4:AddDynamicBinding(idbd, "CONTROL", true, v2, "CONTACT_SENSOR", false, false)
@@ -473,7 +482,6 @@ function OnPropertyChanged (strProperty)
 		Model.boardInit(value)
     elseif (strProperty == 'Check Connection') then
 		CheckConnection()
-		DBG(Current)
 	elseif (strProperty == 'Send Command') then
 		if (value and value ~= "") then
 			SendCommand(value)
