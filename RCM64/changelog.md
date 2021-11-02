@@ -1,4 +1,4 @@
-# Public changes log
+# Changes log
 All notable changes to this project will be documented in this file.
 
 ## [1.1](https://github.com/nhthai173/control4/tree/main/RCM64/Published/Previous%20version/1.1) - 01/11/2021 23:48

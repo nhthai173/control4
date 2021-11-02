@@ -1,0 +1,93 @@
+<devicedata>
+  <copyright>Copyright 2021 nht.  All rights reserved.</copyright>
+  <creator>nht</creator>
+  <manufacturer>nht</manufacturer>
+  <name>yeelight-1</name>
+  <model>1</model>
+  <created>09/24/2021 10:00 AM</created>
+  <modified>09/24/2021 10:00 AM</modified>
+  <version>1</version>
+  <front>{Width=700, Height=336}\x158DVPX777-f.bmp</front>
+  <back>{Width=500, Height=250}\x158dvpx777-b.bmp</back>
+  <control>lua_gen</control>
+  <controlmethod>ip</controlmethod>
+  <driver>DriverWorks</driver>
+  <states />
+  <combo>True</combo>
+  <OnlineCategory>others</OnlineCategory>
+  <connection>
+    <id>6001</id>
+    <connectionname>TCP</connectionname>
+    <type>4</type>
+    <hidden>True</hidden>
+    <consumer>True</consumer>
+    <classes>
+        <class>
+            <classname>TCP</classname>
+        </class>
+    </classes>
+  </connection>
+  <config>
+    <script file="driver.lua" />
+    <documentation file="documentation.rtf" />
+    <properties>
+			<property>
+				<name>Driver Version</name>
+				<default>1</default>
+				<type>STRING</type>
+				<readonly>true</readonly>
+			</property>
+      <property>
+				<name>State</name>
+				<default>off</default>
+				<type>STRING</type>
+				<readonly>true</readonly>
+			</property>
+			<property>
+				<name>Bright</name>
+				<default>0</default>
+				<type>STRING</type>
+				<readonly>true</readonly>
+			</property>
+			<property>
+				<name>Set Power</name>
+				<type>LIST</type>
+				<items>
+					<item>on</item>
+					<item>off</item>
+          <item>toggle</item>
+				</items>
+				<default>on</default>
+				<readonly>false</readonly>
+			</property>
+      <property>
+				<name>Effect</name>
+				<type>LIST</type>
+				<items>
+					<item>smooth</item>
+					<item>sudden</item>
+				</items>
+				<default>smooth</default>
+				<readonly>false</readonly>
+			</property>
+      <property>
+        <name>Duration</name>
+        <type>RANGED_INTEGER</type>
+        <minimum>0</minimum>
+        <maximum>10000</maximum>
+        <default>500</default>
+        <readonly>false</readonly>
+        <tooltip>Effect Duration Time (Milliseconds)</tooltip>
+      </property>
+      <property>
+        <name>Send Command</name>
+        <type>LIST</type>
+				<items>
+					<item>send</item>
+				</items>
+        <default>send</default>
+        <readonly>false</readonly>
+      </property>
+		</properties>
+  </config>
+</devicedata>
