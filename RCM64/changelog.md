@@ -3,8 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [1.1](https://github.com/nhthai173/control4/tree/main/RCM64/Published/Previous%20version/1.1) - 01/11/2021 23:48
 
-- Reduce 80% delay time
-- Add group control without delay between channels
+- Add contact sensor input
 
 ## [1.0.3](https://github.com/nhthai173/control4/tree/main/RCM64/Published/Previous%20version/1.0.3) - 31/10/2021 17:33
 
