@@ -1,4 +1,4 @@
-DRIVER_VERSION = '1.1'
+DRIVER_VERSION = '2.1'
 
 MAX_CON = 3 -- Maximum number of physical connector
 START_ID = 2 -- Dynamic Binding id start from
