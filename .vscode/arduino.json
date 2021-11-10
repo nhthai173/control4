@@ -1,0 +1,7 @@
+{
+    "configuration": "cpu=atmega328old",
+    "board": "arduino:avr:nano",
+    "programmer": "arduino:avrispmkii",
+    "sketch": "CCM12\\DriverDevelopement\\hf_ccm - Arduino\\hf_ccm_debug\\hf_ccm_debug.ino",
+    "port": "COM6"
+}
