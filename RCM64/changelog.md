@@ -1,6 +1,10 @@
 # Changes log
 All notable changes to this project will be documented in this file.
 
+## [2.3](https://github.com/nhthai173/control4/tree/main/RCM64/Published/Previous%20version/2.3)
+
+- Added RM board 
+
 ## [2.2](https://github.com/nhthai173/control4/tree/main/RCM64/Published/Previous%20version/2.2) - 10/11/2021 13:16
 
 - Added relay control for DM 

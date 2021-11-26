@@ -1,4 +1,4 @@
-DRIVER_VERSION = '2.2'
+DRIVER_VERSION = '2.3'
 
 MAX_CON = 3 -- Maximum number of physical connector
 START_ID = 2 -- Dynamic Binding id start from
@@ -13,6 +13,7 @@ Model = {} -- Contains functions and board type of each CON\
 
 Current = {} -- Contains data for current setting
 Current.ID = {} -- List of IDs used
+Current['RM_BOARD'] = {}
 
 Timer = {} -- Contains all timer
 SEND_COMMAND = {} -- Contains commands waiting to be sent
@@ -27,13 +28,19 @@ Channel = {
 				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8},
 				NUMBER_COMMAND = 2,
 				COMMAND = {'OPEN', 'CLOSE'},
-				COMMAND_LABEL = {'UP', 'DOWN'}
+				COMMAND_LABEL = {'- UP', '- DOWN'}
 			},
 			DM = {
 				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8},
 				NUMBER_COMMAND = 3,
 				COMMAND = {'OPEN', 'CLOSE', 'STOP'},
-				COMMAND_LABEL = {'UP', 'DOWN', 'STOP'}
+				COMMAND_LABEL = {'- UP', '- DOWN', '- STOP'}
+			},
+			RM = {
+				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
+				NUMBER_COMMAND = 1,
+				COMMAND = {'TRIGGER'},
+				COMMAND_LABEL = {''}
 			}
 		},
 		CON2 = {
@@ -41,13 +48,19 @@ Channel = {
 				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8},
 				NUMBER_COMMAND = 2,
 				COMMAND = {'OPEN', 'CLOSE'},
-				COMMAND_LABEL = {'UP', 'DOWN'}
+				COMMAND_LABEL = {'- UP', '- DOWN'}
 			},
 			DM = {
 				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8},
 				NUMBER_COMMAND = 3,
 				COMMAND = {'OPEN', 'CLOSE', 'STOP'},
-				COMMAND_LABEL = {'UP', 'DOWN', 'STOP'}
+				COMMAND_LABEL = {'- UP', '- DOWN', '- STOP'}
+			},
+			RM = {
+				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
+				NUMBER_COMMAND = 1,
+				COMMAND = {'TRIGGER'},
+				COMMAND_LABEL = {''}
 			}
 		},
 		CON3 = {
@@ -55,13 +68,19 @@ Channel = {
 				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8},
 				NUMBER_COMMAND = 2,
 				COMMAND = {'OPEN', 'CLOSE'},
-				COMMAND_LABEL = {'UP', 'DOWN'}
+				COMMAND_LABEL = {'- UP', '- DOWN'}
 			},
 			DM = {
 				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8},
 				NUMBER_COMMAND = 3,
 				COMMAND = {'OPEN', 'CLOSE', 'STOP'},
-				COMMAND_LABEL = {'UP', 'DOWN', 'STOP'}
+				COMMAND_LABEL = {'- UP', '- DOWN', '- STOP'}
+			},
+			RM = {
+				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
+				NUMBER_COMMAND = 1,
+				COMMAND = {'TRIGGER'},
+				COMMAND_LABEL = {''}
 			}
 		}
 	}
@@ -392,7 +411,7 @@ function Model.change()
 						}
 						for i=1, Channel[model][k][Model[k]]['NUMBER_COMMAND'], 1 do
 							local start_id = Current.ID.genID('OUTPUT', cID, i)
-							C4:AddDynamicBinding(start_id, "CONTROL", true, k..' - Channel '..v1..' - '..Channel[model][k][Model[k]]['COMMAND_LABEL'][i], "RELAY", false, false)
+							C4:AddDynamicBinding(start_id, "CONTROL", true, k..' - Channel '..v1..' '..Channel[model][k][Model[k]]['COMMAND_LABEL'][i], "RELAY", false, false)
 							table.insert(Current[cID]['ID'], start_id)
 							table.insert(Current[cID]['STATE'], 'C'..v1..','..Channel[model][k][Model[k]]['COMMAND'][i])
 						end
@@ -609,9 +628,12 @@ function ReceivedFromProxy (idBinding, strCommand, tParams)
 					Current[cID]['LAST_SEND'] = "CLOSE"
 					local data2send = '<'..data..state..'>'
 					SendCommand(data2send)
-				elseif (strCommand == 'TRIGGER') then
-					if (tParams['TIME']) then
+				elseif (string.match(data, 'RM') == 'RM' and (strCommand=='TRIGGER' or strCommand=='OPEN' or strCommand=='CLOSE' or strCommand=='TOGGLE')) then
+					if (tParams and tParams['TIME']) then
 						ResetChannel(idBinding, tParams['TIME'])
+					else
+						-- always pulse 2000ms
+						ResetChannel(idBinding, 2000)
 					end
 					Current[cID]['LAST_SEND'] = "CLOSE"
 					local data2send = '<'..data..state..'>'
