@@ -170,6 +170,7 @@ void setup()
   {
     DBG("Output: " + String(OUTPUT_PIN[i]) + "\n");
     pinMode(OUTPUT_PIN[i], OUTPUT);
+    digitalWrite(OUTPUT_PIN[i], OUTPUT_STATE);
   }
 
   for (byte i = 0; i < sizeof(INPUT_PIN); i++)
