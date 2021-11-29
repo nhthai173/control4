@@ -1,5 +1,5 @@
 #define BOARD_NAME "RCM64V1"
-#define VERSION "2" // must be integer number
+#define VERSION "3" // must be integer number
 
 // Temporary array size
 #define MAX_ARRAY 100
