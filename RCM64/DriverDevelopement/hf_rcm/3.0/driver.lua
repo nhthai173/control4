@@ -1,4 +1,4 @@
-DRIVER_VERSION = '3.0 Beta 1'
+DRIVER_VERSION = '3.0 Beta 4'
 FIRMWARE_VERSION = 'NOT FOUND'
 
 MAX_CON = 3 -- Maximum number of physical connector
@@ -197,10 +197,12 @@ HARDWARE = {
         },
 		RM = {
             STATE = {
-                TRIGGER = {0}
+                TRIGGER = {0},
+				NONE = {1}
             },
             RULE = {
-                TRIGGER = {1}
+                TRIGGER = {1},
+				NONE = {1}
             },
             CON1 = {
                 C1 = {31},
@@ -333,8 +335,10 @@ function SplitString (inputstr, sep)
 	end
 	local t={}
 	inputstr = string.match(inputstr, "([^<]+)([>$]+)")
-	for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
-		table.insert(t, str)
+	if (inputstr ~= nil) then
+		for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+			table.insert(t, str)
+		end
 	end
 	return t
 end
@@ -829,10 +833,11 @@ function OnTimerExpired (idTimer)
 		end
 	elseif (idTimer == Timer['SendCommand']) then
 		SendCommandGroup()
-	else
+	elseif(IsTableEmpty(Timer) == false) then
+		-- RM pulse time. ex: ResetChannel57
 		for k, v in pairs(Timer) do
 			if(idTimer == v)then
-				ReceivedFromProxy(tonumber(string.match(k, '%d*%d')), 'OPEN', nil)
+				ReceivedFromProxy(tonumber(string.match(k, '%d*%d')), 'NONE', nil)
 				Timer[k] = Model.KillTimer(Timer[k])
 				break
 			end
@@ -847,27 +852,35 @@ function ReceivedFromSerial(idBinding, strData)
 	DBG("Received Serial Data [" .. idBinding .. "]: " .. strData)
 
 	local serialData = SplitString(strData)
-	if(serialData[1] == 'CHECK_CONNECTION' and serialData[2] == 'CONNECTED')then
-		C4:UpdateProperty ('Connection', 'CONNECTED')
-		IS_CONNECTED = true
-		Timer['CheckConnection'] = Model.AddTimer (Timer['CheckConnection'], 30, 'SECONDS')
-		if (serialData[3] ~= nil) then
-			FIRMWARE_VERSION = serialData[3]
-			C4:UpdateProperty ('Firmware Version', FIRMWARE_VERSION)
-		else
-			FIRMWARE_VERSION = 'NOT FOUND'
-			C4:UpdateProperty ('Firmware Version', FIRMWARE_VERSION)
-		end
-	elseif (serialData[1] == Properties['Model'] and serialData[2] ~= nil and serialData[3] ~= nil) then
-		for k, v in pairs(Current['ID']) do
-			if(type(Current['ID'][k]) == 'table' and Current['ID'][k]['TYPE'] == 'INPUT' and Current['ID'][k]['ID'] == serialData[2])then
-				local idbd = tonumber(string.sub(k, 2))
-				if(serialData[3] == 'OPEN')then
-					C4:SendToProxy(idbd,"OPENED",{}, "NOTIFY")
-				elseif (serialData[3] == 'CLOSE') then
-					C4:SendToProxy(idbd,"CLOSED",{}, "NOTIFY")
+	if (IsTableEmpty(serialData) == false) then
+		if(serialData[1] == 'CHECK_CONNECTION' and serialData[2] == 'CONNECTED')then
+			C4:UpdateProperty ('Connection', 'CONNECTED')
+			IS_CONNECTED = true
+			Timer['CheckConnection'] = Model.AddTimer (Timer['CheckConnection'], 30, 'SECONDS')
+			if (serialData[3] ~= nil) then
+				FIRMWARE_VERSION = serialData[3]
+				C4:UpdateProperty ('Firmware Version', FIRMWARE_VERSION)
+			else
+				FIRMWARE_VERSION = 'NOT FOUND'
+				C4:UpdateProperty ('Firmware Version', FIRMWARE_VERSION)
+			end
+		elseif (serialData[1] == Properties['Model'] and serialData[2] ~= nil and serialData[3] ~= nil) then
+			for k, v in pairs(Current['ID']) do
+				if(type(Current['ID'][k]) == 'table' and Current['ID'][k]['TYPE'] == 'INPUT')then
+					-- condition for old firmware
+					local ocon = Current['ID'][k]['ID'] == serialData[2]
+					-- condition for new firmware (>= 2)
+					local v2con = FIRMWARE_VERSION ~= 'NOT FOUND' and tonumber(FIRMWARE_VERSION) >= 2 and Current['ID'][k]['ID'] == HARDWARE[serialData[1]]['INPUT']['I'..serialData[2]]
+					if (ocon == true or v2con == true) then
+						local idbd = tonumber(string.sub(k, 2))
+						if(serialData[3] == 'OPEN')then
+							C4:SendToProxy(idbd,"OPENED",{}, "NOTIFY")
+						elseif (serialData[3] == 'CLOSE') then
+							C4:SendToProxy(idbd,"CLOSED",{}, "NOTIFY")
+						end
+						break
+					end
 				end
-				break
 			end
 		end
 	end
@@ -885,33 +898,43 @@ function ReceivedFromProxy (idBinding, strCommand, tParams)
 	end
 
 	if(idBinding > 1)then
-		
-		if(IsTableEmpty(Current['ID']['B'..idBinding]) == false)then
-			local cID = Current['ID']['B'..idBinding]['ID']
-			local stid = Current['ID']['B'..idBinding]['STATE_ID']
+
+		local bid = 'B'..idBinding
+		if(IsTableEmpty(Current['ID'][bid]) == false and Current['ID'][bid]['TYPE'] == 'OUTPUT')then
+			local cID = Current['ID'][bid]['ID']
+			local stid = Current['ID'][bid]['STATE_ID']
 			local state = Current[cID]['STATE'][stid]
 			local data = Current[cID]['DATA']
 
 			if(state ~= nil and data ~= nil and strCommand ~= Current[cID]['LAST_SEND'])then
-				if(strCommand == "OPEN")then
-					Current[cID]['LAST_SEND'] = "OPEN"
-					local c = string.match(state, '^C%d*%d')
-					local data2send = '<'..data..c..',NONE'..'>'
-					SendCommand(data2send)
-				elseif (strCommand == "CLOSE") then
-					Current[cID]['LAST_SEND'] = "CLOSE"
-					local data2send = '<'..data..state..'>'
-					SendCommand(data2send)
-				elseif (string.match(data, 'RM') == 'RM' and (strCommand=='TRIGGER' or strCommand=='OPEN' or strCommand=='CLOSE' or strCommand=='TOGGLE')) then
-					if (tParams and tParams['TIME']) then
-						ResetChannel(idBinding, tParams['TIME'])
-					else
-						-- always pulse 2000ms
-						ResetChannel(idBinding, 2000)
+				if (string.match(data, 'RM') == 'RM') then
+					if (strCommand=='TRIGGER' or strCommand=='OPEN' or strCommand=='CLOSE' or strCommand=='TOGGLE') then
+						if (tParams and tParams['TIME']) then
+							ResetChannel(idBinding, tParams['TIME'])
+						else
+							-- always pulse 2000ms
+							ResetChannel(idBinding, 2000)
+						end
+						Current[cID]['LAST_SEND'] = "CLOSE"
+						local data2send = '<'..data..state..'>'
+						SendCommand(data2send)
+					elseif strCommand == 'NONE' then
+						Current[cID]['LAST_SEND'] = "NONE"
+						local c = string.match(state, '^C%d*%d')
+						local data2send = '<'..data..c..',NONE'..'>'
+						SendCommand(data2send)
 					end
-					Current[cID]['LAST_SEND'] = "CLOSE"
-					local data2send = '<'..data..state..'>'
-					SendCommand(data2send)
+				elseif (string.match(data, 'DM') == 'DM' or string.match(data, 'MM') == 'MM') then
+					if(strCommand == "OPEN")then
+						Current[cID]['LAST_SEND'] = "OPEN"
+						local c = string.match(state, '^C%d*%d')
+						local data2send = '<'..data..c..',NONE'..'>'
+						SendCommand(data2send)
+					elseif (strCommand == "CLOSE") then
+						Current[cID]['LAST_SEND'] = "CLOSE"
+						local data2send = '<'..data..state..'>'
+						SendCommand(data2send)
+					end
 				end
 			end
 		else
