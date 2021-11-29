@@ -1,5 +1,5 @@
 #define BOARD_NAME "RCM64V1"
-#define VERSION "2.0.1"
+#define VERSION "2" // must be integer number
 
 // Temporary array size
 #define MAX_ARRAY 100
@@ -19,7 +19,7 @@ byte INPUT_PIN[] = {58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69};
 
 byte INPUT_STATE[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-String INPUT_STATE_LABEL[] = {"OPEN", "CLOSE"};
+String INPUT_STATE_LABEL[] = {"CLOSE", "OPEN"};
 
 
 
@@ -103,10 +103,21 @@ void splitString(String *iStr, String *aStr, byte *aIndex, String sSep, String e
   Startup Message
 */
 void startupMessage(){
-  Serial.print("<CHECK_CONNECTION,CONNECTED>\n");
+  Serial.print("<CHECK_CONNECTION,CONNECTED,"+String(VERSION)+">\n");
   Serial.print("<BOARD,"+String(BOARD_NAME)+">\n");
-  Serial.print("<VERSION,"+String(VERSION)+">\n");
 }
+
+
+
+
+/*
+  Invalid Command
+*/
+void invalidCommand(){
+  DBG("Invalid Command !");
+  startupMessage();
+}
+
 
 
 
@@ -202,7 +213,7 @@ void loop()
     if(commandIndex == 0)
     {
       DBG(input+"\n");
-      DBG("Invalid Command !\n");
+      invalidCommand();
     }
 
     for (byte i = 0; i < commandIndex; i++)
@@ -298,13 +309,13 @@ void loop()
             }
             else
             {
-              DBG("Invalid command !");
+              invalidCommand();
             }
 
           }
           else
           {
-            DBG("Invalid Command !");
+            invalidCommand();
           }
           
 
@@ -321,7 +332,6 @@ void loop()
         if(arr[0] == "CHECK_CONNECTION")
         {
           startupMessage();
-          getAllState();
         }
         else if(arr[0] == "GET_ALL_STATE")
         {
@@ -329,13 +339,13 @@ void loop()
         }
         else
         {
-          DBG("Invalid Command !");
+          invalidCommand();
         }
         
       }
       else
       {
-        DBG("Invalid Command !");
+        invalidCommand();
       }
       
       DBG("\n-----------------------\n");
