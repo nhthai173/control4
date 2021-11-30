@@ -104,7 +104,7 @@ void splitString(String *iStr, String *aStr, byte *aIndex, String sSep, String e
 */
 void startupMessage(){
   Serial.print("<CHECK_CONNECTION,CONNECTED,"+String(VERSION)+">\n");
-  Serial.print("<BOARD,"+String(BOARD_NAME)+">\n");
+  //Serial.print("<BOARD,"+String(BOARD_NAME)+">\n");
 }
 
 
@@ -251,7 +251,7 @@ void loop()
             DBG("Pins: " + pins[0] + "\n");
 
             arr[1] = arr[1].substring(arr[1].indexOf("[[") + pins[0].length() + 3, arr[1].length());
-            Serial.print("Actions: " + arr[1] + "\n");
+            DBG("Actions: " + arr[1] + "\n");
 
             if(arr[1].indexOf("[") >= 0 && arr[1].indexOf("]") >= 0)
             {

@@ -11,7 +11,7 @@
 #define OUTPUT_STATE 1
 
 // Debug mode
-bool DEBUG = false;
+bool DEBUG = true;
 
 byte OUTPUT_PIN[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57};
 
@@ -20,6 +20,9 @@ byte INPUT_PIN[] = {58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69};
 byte INPUT_STATE[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 String INPUT_STATE_LABEL[] = {"CLOSE", "OPEN"};
+
+
+
 
 /*
 -------------------------------------
@@ -32,6 +35,9 @@ void DBG(String str)
   if (DEBUG == true)
     Serial.print(str);
 }
+
+
+
 
 /*
 -------------------------------------
@@ -89,23 +95,31 @@ void splitString(String *iStr, String *aStr, byte *aIndex, String sSep, String e
   }
 }
 
+
+
+
+
 /*
   Startup Message
 */
-void startupMessage()
-{
-  Serial.print("<CHECK_CONNECTION,CONNECTED," + String(VERSION) + ">\n");
-  Serial.print("<BOARD," + String(BOARD_NAME) + ">\n");
+void startupMessage(){
+  Serial.print("<CHECK_CONNECTION,CONNECTED,"+String(VERSION)+">\n");
+  //Serial.print("<BOARD,"+String(BOARD_NAME)+">\n");
 }
+
+
+
 
 /*
   Invalid Command
 */
-void invalidCommand()
-{
+void invalidCommand(){
   DBG("Invalid Command !");
   startupMessage();
 }
+
+
+
 
 /*
   Send state of pin to controller via serial
@@ -116,6 +130,9 @@ void sendState(byte pinNum)
   String strState = INPUT_STATE_LABEL[state];
   Serial.print("<" + String(BOARD_NAME) + "," + String(pinNum) + "," + strState + ">\n");
 }
+
+
+
 
 /*
   Get all state of input pins and send to controller
@@ -129,6 +146,9 @@ void getAllState()
     sendState(pinNum);
   }
 }
+
+
+
 
 /*
   check the change of the state of the pins and send to controller
@@ -146,6 +166,9 @@ void syncState()
   }
 }
 
+
+
+
 void setup()
 {
 
@@ -153,7 +176,7 @@ void setup()
   while (!Serial)
     continue;
   DBG("Ready\n");
-
+  
   for (byte i = 0; i < sizeof(OUTPUT_PIN); i++)
   {
     DBG("Output: " + String(OUTPUT_PIN[i]) + "\n");
@@ -167,7 +190,11 @@ void setup()
     pinMode(INPUT_PIN[i], INPUT_PULLUP);
   }
   getAllState();
+
 }
+
+
+
 
 void loop()
 {
@@ -178,14 +205,14 @@ void loop()
     //<RCM64V1,[[10,11],[12,13],[14,15]],[0,DLY1000,1]>
     String input = Serial.readStringUntil('\n');
 
-    // separate by < >
+    //separate by < >
     String command[MAX_ARRAY];
     byte commandIndex = 0;
     splitString(&input, &command[0], &commandIndex, "<", ">", 1, 0);
 
-    if (commandIndex == 0)
+    if(commandIndex == 0)
     {
-      DBG(input + "\n");
+      DBG(input+"\n");
       invalidCommand();
     }
 
@@ -193,10 +220,11 @@ void loop()
     {
       DBG("Data: " + command[i] + "\n");
 
-      // split by comma
+      //split by comma
       String arr[MAX_ARRAY];
       byte arrIndex = 0;
       splitString(&command[i], &arr[0], &arrIndex, ",", "", 1, 0);
+
 
       /*
       -----------------------------
@@ -212,7 +240,7 @@ void loop()
       {
         DBG("Board: " + arr[0] + "\n");
 
-        if (arr[0] == String(BOARD_NAME))
+        if(arr[0] == String(BOARD_NAME))
         {
 
           String pins[MAX_ARRAY];
@@ -223,9 +251,9 @@ void loop()
             DBG("Pins: " + pins[0] + "\n");
 
             arr[1] = arr[1].substring(arr[1].indexOf("[[") + pins[0].length() + 3, arr[1].length());
-            Serial.print("Actions: " + arr[1] + "\n");
+            DBG("Actions: " + arr[1] + "\n");
 
-            if (arr[1].indexOf("[") >= 0 && arr[1].indexOf("]") >= 0)
+            if(arr[1].indexOf("[") >= 0 && arr[1].indexOf("]") >= 0)
             {
 
               String pinsY[MAX_ARRAY];
@@ -277,29 +305,35 @@ void loop()
                   pinC++;
                 }
               }
+
             }
             else
             {
               invalidCommand();
             }
+
           }
           else
           {
             invalidCommand();
           }
+          
+
         }
         else
         {
           DBG("Invalid Board !");
         }
+        
+
       }
-      else if (arrIndex == 1)
+      else if(arrIndex == 1)
       {
-        if (arr[0] == "CHECK_CONNECTION")
+        if(arr[0] == "CHECK_CONNECTION")
         {
           startupMessage();
         }
-        else if (arr[0] == "GET_ALL_STATE")
+        else if(arr[0] == "GET_ALL_STATE")
         {
           getAllState();
         }
@@ -307,12 +341,13 @@ void loop()
         {
           invalidCommand();
         }
+        
       }
       else
       {
         invalidCommand();
       }
-
+      
       DBG("\n-----------------------\n");
     }
   }

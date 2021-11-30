@@ -1,4 +1,4 @@
-DRIVER_VERSION = '3.0 Beta 5'
+DRIVER_VERSION = '3.0 Beta 6'
 FIRMWARE_VERSION = 'NOT FOUND'
 
 MAX_CON = 3 -- Maximum number of physical connector
@@ -198,10 +198,14 @@ HARDWARE = {
 		RM = {
             STATE = {
                 TRIGGER = {0},
+				OPEN = {1},
+				CLOSE = {0},
 				NONE = {1}
             },
             RULE = {
                 TRIGGER = {1},
+				OPEN = {1},
+				CLOSE = {1},
 				NONE = {1}
             },
             CON1 = {
@@ -647,7 +651,7 @@ function Model.change()
 						Current[cID] = {
 							MODEL = Model[k],
 							DATA =  model..','..Model[k]..','..k..',',
-							LAST_SEND = "OPEN",
+							LAST_SEND = "",
 							STATE = {},
 							ID = {}
 						}
@@ -908,32 +912,38 @@ function ReceivedFromProxy (idBinding, strCommand, tParams)
 
 			if(state ~= nil and data ~= nil and strCommand ~= Current[cID]['LAST_SEND'])then
 				if (string.match(data, 'RM') == 'RM') then
-					if (strCommand=='TRIGGER' or strCommand=='OPEN' or strCommand=='CLOSE' or strCommand=='TOGGLE') then
+					local c = string.match(state, '^C%d*%d')
+					if (strCommand=='TRIGGER') then
 						if (tParams and tParams['TIME']) then
 							ResetChannel(idBinding, tParams['TIME'])
 						else
 							-- always pulse 2000ms
 							ResetChannel(idBinding, 2000)
 						end
-						Current[cID]['LAST_SEND'] = "CLOSE"
-						local data2send = '<'..data..state..'>'
-						SendCommand(data2send)
+						Current[cID]['LAST_SEND'] = 'TRIGGER'
+						SendCommand('<'..data..state..'>')
 					elseif strCommand == 'NONE' then
 						Current[cID]['LAST_SEND'] = "NONE"
-						local c = string.match(state, '^C%d*%d')
-						local data2send = '<'..data..c..',NONE'..'>'
-						SendCommand(data2send)
+						SendCommand('<'..data..c..',NONE'..'>')
+					elseif strCommand=='OPEN' or strCommand=='CLOSE' then
+						Current[cID]['LAST_SEND'] = strCommand
+						SendCommand('<'..data..c..','..strCommand..'>')
+					elseif strCommand=='TOGGLE' then
+						if (Current[cID]['LAST_SEND'] == 'OPEN') then
+							Current[cID]['LAST_SEND'] = 'CLOSE'
+						elseif Current[cID]['LAST_SEND'] == 'CLOSE' then
+							Current[cID]['LAST_SEND'] = 'OPEN'
+						end
+						SendCommand('<'..data..c..','..Current[cID]['LAST_SEND']..'>')
 					end
 				elseif (string.match(data, 'DM') == 'DM' or string.match(data, 'MM') == 'MM') then
 					if(strCommand == "OPEN")then
 						Current[cID]['LAST_SEND'] = "OPEN"
 						local c = string.match(state, '^C%d*%d')
-						local data2send = '<'..data..c..',NONE'..'>'
-						SendCommand(data2send)
+						SendCommand('<'..data..c..',NONE'..'>')
 					elseif (strCommand == "CLOSE") then
 						Current[cID]['LAST_SEND'] = "CLOSE"
-						local data2send = '<'..data..state..'>'
-						SendCommand(data2send)
+						SendCommand('<'..data..state..'>')
 					end
 				end
 			end
