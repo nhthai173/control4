@@ -1,6 +1,10 @@
 # Changes log
 All notable changes to this project will be documented in this file.
 
+## [3.0](https://github.com/nhthai173/control4/tree/main/RCM64/Published/All%20version/3.0) - 01/12/2021 21:34
+
+- 70% lighter
+
 ## [2.3](https://github.com/nhthai173/control4/tree/main/RCM64/Published/All%20version/2.3)
 
 - Added RM board 

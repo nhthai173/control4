@@ -1,4 +1,4 @@
-DRIVER_VERSION = '3.0 Beta 6'
+DRIVER_VERSION = '3.0'
 FIRMWARE_VERSION = 'NOT FOUND'
 
 MAX_CON = 3 -- Maximum number of physical connector

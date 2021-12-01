@@ -17,9 +17,14 @@ byte OUTPUT_PIN[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 22, 23, 24, 25, 26,
 
 byte INPUT_PIN[] = {58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69};
 
-byte INPUT_STATE[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+byte INPUT_STATE[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
 String INPUT_STATE_LABEL[] = {"CLOSE", "OPEN"};
+
+bool IN_SENDALL = false;
+byte SENDALL_INDEX = 0;
+byte SENDALL_INTERVAL = 150;
+unsigned long SENDALL_ = 0;
 
 
 
@@ -139,6 +144,13 @@ void sendState(byte pinNum)
 */
 void getAllState()
 {
+  IN_SENDALL = true;
+  SENDALL_INDEX = 0;
+  SENDALL_ = millis();
+}
+/*
+void getAllState()
+{
   for (byte i = 0; i < sizeof(INPUT_PIN); i++)
   {
     byte pinNum = INPUT_PIN[i];
@@ -146,6 +158,7 @@ void getAllState()
     sendState(pinNum);
   }
 }
+*/
 
 
 
@@ -163,6 +176,28 @@ void syncState()
       INPUT_STATE[pinNum] = digitalRead(pinNum);
       sendState(pinNum);
     }
+  }
+}
+
+
+
+
+// Timer
+void timer()
+{
+  if (IN_SENDALL == true && millis() - SENDALL_ >= SENDALL_INTERVAL)
+  {
+    SENDALL_ = millis();
+    if (SENDALL_INDEX < sizeof(INPUT_PIN))
+    {
+      byte pst = INPUT_PIN[SENDALL_INDEX];
+      byte vst = digitalRead(pst);
+      INPUT_STATE[pst] = vst;
+      sendState(pst);
+      SENDALL_INDEX++;
+    }
+    else
+      IN_SENDALL = false;
   }
 }
 
@@ -332,6 +367,7 @@ void loop()
         if(arr[0] == "CHECK_CONNECTION")
         {
           startupMessage();
+          getAllState();
         }
         else if(arr[0] == "GET_ALL_STATE")
         {
@@ -354,5 +390,6 @@ void loop()
   else
   {
     syncState();
+    timer();
   }
 }
