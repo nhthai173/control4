@@ -5,8 +5,8 @@
   <name>Home Flow RCM64</name>
   <model>HF-RCM64</model>
   <created>09/24/2021 10:00 AM</created>
-  <modified>10/27/2021 04:18 PM</modified>
-  <version>3014</version>
+  <modified>12/10/2021 03:54 PM</modified>
+  <version>3016</version>
   <small image_source="c4z">icons/device_sm.png</small>
   <large image_source="c4z">icons/device_lg.png</large>
   <control>lua_gen</control>
@@ -73,23 +73,23 @@
         <default>OFF</default>
         <readonly>false</readonly>
       </property>
+
       <property>
-        <name>Connection</name>
-        <default>NOT CHECK</default>
+        <name>Debug Level</name>
+        <type>LIST</type>
+        <items>
+          <item>1 - Info</item>
+          <item>2 - Trace</item>
+        </items>
+        <default>1 - Info</default>
+        <readonly>false</readonly>
+      </property>
+      <property>
+        <name>Current</name>
+        <default>NONE</default>
         <type>STRING</type>
         <readonly>true</readonly>
       </property>
-
-      <property>
-        <name>Check Connection</name>
-        <type>LIST</type>
-        <items>
-          <item>Check</item>
-        </items>
-        <default></default>
-        <readonly>false</readonly>
-      </property>
-      
       <property>
         <name>Send Command</name>
         <default>1</default>
@@ -100,6 +100,22 @@
         <name>Received Command</name>
         <default>1</default>
         <type>STRING</type>
+        <readonly>false</readonly>
+      </property>
+
+      <property>
+        <name>Connection</name>
+        <default>NOT CHECK</default>
+        <type>STRING</type>
+        <readonly>true</readonly>
+      </property>
+      <property>
+        <name>Check Connection</name>
+        <type>LIST</type>
+        <items>
+          <item>Check</item>
+        </items>
+        <default></default>
         <readonly>false</readonly>
       </property>
       
@@ -130,27 +146,57 @@
         <default>RCM64V1</default>
         <readonly>true</readonly>
       </property>
+      <!--
       <property>
         <name>CON1</name>
         <type>DYNAMIC_LIST</type>
         <default>NOT USE</default>
         <readonly>false</readonly>
       </property>
+      -->
+      <property>
+        <name>CON1</name>
+        <type>LIST</type>
+        <items>
+          <item>MM</item>
+          <item>DM</item>
+          <item>RM</item>
+          <item>NOT USE</item>
+        </items>
+        <default>NOT USE</default>
+        <readonly>false</readonly>
+      </property>
       <property>
         <name>CON2</name>
-        <type>DYNAMIC_LIST</type>
+        <type>LIST</type>
+        <items>
+          <item>MM</item>
+          <item>DM</item>
+          <item>RM</item>
+          <item>NOT USE</item>
+        </items>
         <default>NOT USE</default>
         <readonly>false</readonly>
       </property>
       <property>
         <name>CON3</name>
-        <type>DYNAMIC_LIST</type>
+        <type>LIST</type>
+        <items>
+          <item>MM</item>
+          <item>DM</item>
+          <item>RM</item>
+          <item>NOT USE</item>
+        </items>
         <default>NOT USE</default>
         <readonly>false</readonly>
       </property>
       <property>
         <name>INPUT</name>
-        <type>DYNAMIC_LIST</type>
+        <type>LIST</type>
+        <items>
+          <item>USE</item>
+          <item>NOT USE</item>
+        </items>
         <default>NOT USE</default>
         <readonly>false</readonly>
       </property>
