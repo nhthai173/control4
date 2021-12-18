@@ -11,18 +11,18 @@ byte POWERCYCLE_DELAY = 200;
 byte TRIGGER_STATE = 0; // input trigger state
 String STATE[2] = {"OPEN", "CLOSE"}; // input state: integer -> string (0 -> CLOSE, 1 -> OPEN)
 
-#define NUMBER_INPUT_PIN 12
+#define NUMBER_INPUT_PIN 11
 #define NUMBER_EMERGENCY_INPUT_PIN 2
 
-byte INPUT_PIN[NUMBER_INPUT_PIN] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-byte EMERGENCY_INPUT_PIN[NUMBER_EMERGENCY_INPUT_PIN] = {12, 13};
+byte INPUT_PIN[NUMBER_INPUT_PIN] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+byte EMERGENCY_INPUT_PIN[NUMBER_EMERGENCY_INPUT_PIN] = {11, 12};
 byte SIREN_PIN[] = {14};
 byte POWERCYCLE_PIN[] = {15};
 
 byte INPUT_STATE[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 
 // bypass zone init with 0. If a zone is bypassed then BYPASS_ZONE array will be replaced 0 with the pin number
-byte BYPASS_ZONE[NUMBER_INPUT_PIN] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+byte BYPASS_ZONE[NUMBER_INPUT_PIN] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 bool IS_ARM = false;
 int ENTRY_DELAY = 0;
@@ -305,6 +305,14 @@ void syncState()
 
 
 
+// Response for "CHECK_CONNECTION"
+void startupMessage(){
+  Serial.print("<CHECK_CONNECTION,CONNECTED,"+String(VERSION)+">\n");
+  //Serial.print("<BOARD,"+String(BOARD_NAME)+">\n");
+}
+
+
+
 
 void setup()
 {
@@ -406,6 +414,7 @@ void loop()
             <ALARM>
             <DISARM>
             <GET_ALL_STATE>
+            <CHECK_CONNECTION>
             */
             if (subcommandIndex == 3 && subcommand[0] == "ARM")
             {
@@ -424,6 +433,8 @@ void loop()
                     getAllState();
                 else if(subcommand[0] == "ALARM")
                     sirenOn();
+                else if(subcommand[0] == "CHECK_CONNECTION")
+                    startupMessage();
             }
         }
     }

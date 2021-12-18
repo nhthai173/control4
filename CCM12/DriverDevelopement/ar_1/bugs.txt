@@ -1,0 +1,1 @@
+khi disarm cần phải refresh lại pin state để tránh bug
