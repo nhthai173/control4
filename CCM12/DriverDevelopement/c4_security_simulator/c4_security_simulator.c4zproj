@@ -1,0 +1,21 @@
+﻿<Driver type="c4z" name="c4_security_simulator">
+ <Items>
+  <Item type="dir" c4zDir="common" name="common" recurse="true" exclude="false" />
+  <Item type="dir" c4zDir="icons" name="icons" recurse="true" exclude="false" />
+  <Item type="dir" c4zDir="lib" name="lib" recurse="true" exclude="false" />
+  <Item type="dir" c4zDir="panel_proxy" name="panel_proxy" recurse="true" exclude="false" />
+  <Item type="dir" c4zDir="partition_proxy" name="partition_proxy" recurse="true" exclude="false" />
+  <Item type="dir" c4zDir="www" name="www" recurse="true" exclude="false" />
+  <Item type="file" name="actions.lua" />
+  <Item type="file" name="c4securitysim.lua" />
+  <Item type="file" name="c4securitysim_communicator.lua" />
+  <Item type="file" name="c4securitysim_device.lua" />
+  <Item type="file" name="connections.lua" />
+  <Item type="file" name="device_messages.lua" />
+  <Item type="file" name="device_specific_commands.lua" />
+  <Item type="file" name="driver.lua" />
+  <Item type="file" name="driver.xml" />
+  <Item type="file" name="driver_functions.lua" />
+  <Item type="file" name="properties.lua" />
+ </Items>
+</Driver>

@@ -1,0 +1,28 @@
+Entry delay error
+c4securitysim_device.lua -> function upar:ZoneChanged(WhichZone) -> if (self._ArmType == "Away" and not self:AllZonesReady())  or  (self._ArmType == "Home" and not self:HomeZonesReady()) then
+
+----------------
+
+Bypass and Disarm code
+securitypartition.lua -> function SecurityPartition:PrxPartitionArm(tParams)
+
+----------------
+
+c4securitysim_communicator.lua
+
+----------------
+
+code require condition
+c4securitysim_device.lua -> function upar:AttemptToArm(TargArmType, UserCode, DoBypass) -> 
+
+----------------
+
+assign all zone
+c4securitysim_device.lua -> function ud:HW_AdjustZoneCount(NewZoneCount)
+
+
+
+----------------
+
+11: CO
+12: Heat & Smoke 

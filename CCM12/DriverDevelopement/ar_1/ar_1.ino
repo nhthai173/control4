@@ -1,14 +1,14 @@
 bool DEBUG = true; // Debug mode
 
 #define BOARD_NAME "CCM12V1" // board name
-#define VERSION 1 // firmware version
+#define VERSION 1            // firmware version
 
 #define MAX_ARRAY 32
 
-byte SIREN_STATE = 1; // state to trigger siren
-byte POWERCYCLE_STATE = 1;// State to trigger powercycle
+byte SIREN_STATE = 1;      // state to trigger siren
+byte POWERCYCLE_STATE = 1; // State to trigger powercycle
 byte POWERCYCLE_DELAY = 200;
-byte TRIGGER_STATE = 0; // input trigger state
+byte TRIGGER_STATE = 0;              // input trigger state
 String STATE[2] = {"OPEN", "CLOSE"}; // input state: integer -> string (0 -> CLOSE, 1 -> OPEN)
 
 #define NUMBER_INPUT_PIN 11
@@ -30,15 +30,12 @@ bool START_ENTRY_DELAY = false;
 bool END_ENTRY_DELAY = false;
 unsigned long ENTRY_DELAY_ = 0;
 
-//bool IN_ALARM = false;
+// bool IN_ALARM = false;
 
 bool IN_SENDALL = false;
 byte SENDALL_INDEX = 0;
 byte SENDALL_INTERVAL = 150;
 unsigned long SENDALL_ = 0;
-
-
-
 
 // print to serial when DEBUG == true
 void dbg(String str)
@@ -46,9 +43,6 @@ void dbg(String str)
     if (DEBUG == true)
         Serial.println(str);
 }
-
-
-
 
 // Send pin state to serial
 void sendState(byte pinNum)
@@ -58,9 +52,6 @@ void sendState(byte pinNum)
     Serial.print("<" + String(BOARD_NAME) + "," + String(pinNum) + "," + strState + ">\n");
 }
 
-
-
-
 // clear all bypass zones
 void clearBypass()
 {
@@ -69,28 +60,22 @@ void clearBypass()
     dbg("CLEAR BYPASS");
 }
 
-
-
-
-void sirenOn(){
+void sirenOn()
+{
     for (byte i = 0; i < sizeof(SIREN_PIN); i++)
         digitalWrite(SIREN_PIN[i], SIREN_STATE);
     dbg("SIREN ON");
 }
 
-
-
-
-void sirenOff(){
+void sirenOff()
+{
     for (byte i = 0; i < sizeof(SIREN_PIN); i++)
         digitalWrite(SIREN_PIN[i], !SIREN_STATE);
     dbg("SIREN OFF");
 }
 
-
-
-
-void powerCycle(){
+void powerCycle()
+{
     dbg("POWER CYCLE");
     for (byte i = 0; i < sizeof(POWERCYCLE_PIN); i++)
         digitalWrite(POWERCYCLE_PIN[i], !POWERCYCLE_STATE);
@@ -99,21 +84,16 @@ void powerCycle(){
         digitalWrite(POWERCYCLE_PIN[i], POWERCYCLE_STATE);
 }
 
-
-
-
 void entryDelay()
 {
-    if(START_ENTRY_DELAY == false){
+    if (START_ENTRY_DELAY == false)
+    {
         ENTRY_DELAY_ = millis();
         END_ENTRY_DELAY = false;
         START_ENTRY_DELAY = true;
         dbg("START ENTRY DELAY");
     }
 }
-
-
-
 
 /*
     alarm: When armed and a zone passed
@@ -128,36 +108,31 @@ void alarm(String type)
         entryDelay();
 }
 
-
-
-
 void timer()
 {
-    //entry delay
-    if (START_ENTRY_DELAY == true && END_ENTRY_DELAY == false && (((millis()-ENTRY_DELAY_) >= (1000*ENTRY_DELAY)) || (millis() - ENTRY_DELAY_ < 0) || ENTRY_DELAY == 0))
+    // entry delay
+    if (START_ENTRY_DELAY == true && END_ENTRY_DELAY == false && (((millis() - ENTRY_DELAY_) >= (1000 * ENTRY_DELAY)) || (millis() - ENTRY_DELAY_ < 0) || ENTRY_DELAY == 0))
     {
         sirenOn();
         END_ENTRY_DELAY = true;
     }
 
     // send all state with delay interval
-    if(IN_SENDALL == true && millis()-SENDALL_ >= SENDALL_INTERVAL)
+    if (IN_SENDALL == true && millis() - SENDALL_ >= SENDALL_INTERVAL)
     {
         SENDALL_ = millis();
-        if(SENDALL_INDEX < NUMBER_INPUT_PIN)
+        if (SENDALL_INDEX < NUMBER_INPUT_PIN)
         {
             byte pst = INPUT_PIN[SENDALL_INDEX];
             byte vst = digitalRead(pst);
             INPUT_STATE[pst] = vst;
             sendState(pst);
             SENDALL_INDEX++;
-        }else
+        }
+        else
             IN_SENDALL = false;
     }
 }
-
-
-
 
 /*
     Arm mode:
@@ -169,8 +144,8 @@ void arm(bool st, byte ed)
     END_ENTRY_DELAY = false;
     clearBypass();
     ENTRY_DELAY = ed;
-    dbg("Entry delay: "+String(ENTRY_DELAY));
-    if(st == true)
+    dbg("Entry delay: " + String(ENTRY_DELAY));
+    if (st == true)
     {
         IS_ARM = true;
         byte bzi = 0;
@@ -192,9 +167,6 @@ void arm(bool st, byte ed)
     }
 }
 
-
-
-
 /*
     Disarm:
     clear bypass, power cycle and turn siren off
@@ -206,9 +178,6 @@ void disarm()
     sirenOff();
     dbg("DISARMED");
 }
-
-
-
 
 // sync all changes of pin state
 void syncStateLite()
@@ -224,9 +193,6 @@ void syncStateLite()
     }
 }
 
-
-
-
 // Get all state: send all state of input pins
 void getAllState()
 {
@@ -235,10 +201,7 @@ void getAllState()
     SENDALL_ = millis();
 }
 
-
-
-
-/* 
+/*
     Sync state: sync all changes of pin state
     when armed and a pin has a state the same as TRIGGER_STATE -> alarm()
 */
@@ -302,17 +265,12 @@ void syncState()
     }
 }
 
-
-
-
 // Response for "CHECK_CONNECTION"
-void startupMessage(){
-  Serial.print("<CHECK_CONNECTION,CONNECTED,"+String(VERSION)+">\n");
-  //Serial.print("<BOARD,"+String(BOARD_NAME)+">\n");
+void startupMessage()
+{
+    Serial.print("<CHECK_CONNECTION,CONNECTED," + String(VERSION) + ">\n");
+    // Serial.print("<BOARD,"+String(BOARD_NAME)+">\n");
 }
-
-
-
 
 void setup()
 {
@@ -344,55 +302,49 @@ void setup()
     getAllState();
 }
 
-
-
-
 void splitString(String *iStr, String *aStr, byte *aIndex, String sSep, String eSep, byte sD, byte eD)
 {
-  if (eSep != "")
-  {
-    int st = (*iStr).indexOf(sSep), en = (*iStr).indexOf(eSep);
-    while (en > st && st > -1)
+    if (eSep != "")
     {
-      *(aStr + *aIndex) = (*iStr).substring(st + sD, en + eD);
-      (*aIndex)++;
-      st = (*iStr).indexOf(sSep, st + 1);
-      en = (*iStr).indexOf(eSep, en + 1);
+        int st = (*iStr).indexOf(sSep), en = (*iStr).indexOf(eSep);
+        while (en > st && st > -1)
+        {
+            *(aStr + *aIndex) = (*iStr).substring(st + sD, en + eD);
+            (*aIndex)++;
+            st = (*iStr).indexOf(sSep, st + 1);
+            en = (*iStr).indexOf(eSep, en + 1);
+        }
     }
-  }
-  else
-  {
-    int sepIndexList[12];
-    byte sepIndex = 1;
-    sepIndexList[0] = 0;
-    int iTemp = (*iStr).indexOf(",");
-    while (iTemp > -1)
+    else
     {
-      if ((*iStr).indexOf("[") == -1 || iTemp < (*iStr).indexOf("[") || (*iStr).indexOf("]", iTemp) == -1)
-      {
-        sepIndexList[sepIndex] = iTemp;
-        sepIndex++;
-      }
-      iTemp = (*iStr).indexOf(",", iTemp + 1);
+        int sepIndexList[12];
+        byte sepIndex = 1;
+        sepIndexList[0] = 0;
+        int iTemp = (*iStr).indexOf(",");
+        while (iTemp > -1)
+        {
+            if ((*iStr).indexOf("[") == -1 || iTemp < (*iStr).indexOf("[") || (*iStr).indexOf("]", iTemp) == -1)
+            {
+                sepIndexList[sepIndex] = iTemp;
+                sepIndex++;
+            }
+            iTemp = (*iStr).indexOf(",", iTemp + 1);
+        }
+        sepIndexList[sepIndex] = (*iStr).length();
+        for (byte i = 0; i < sepIndex; i++)
+        {
+            if (i == 0)
+            {
+                *(aStr + *aIndex) = (*iStr).substring(sepIndexList[i], sepIndexList[i + 1]);
+            }
+            else
+            {
+                *(aStr + *aIndex) = (*iStr).substring(sepIndexList[i] + 1, sepIndexList[i + 1]);
+            }
+            (*aIndex)++;
+        }
     }
-    sepIndexList[sepIndex] = (*iStr).length();
-    for (byte i = 0; i < sepIndex; i++)
-    {
-      if (i == 0)
-      {
-        *(aStr + *aIndex) = (*iStr).substring(sepIndexList[i], sepIndexList[i + 1]);
-      }
-      else
-      {
-        *(aStr + *aIndex) = (*iStr).substring(sepIndexList[i] + 1, sepIndexList[i + 1]);
-      }
-      (*aIndex)++;
-    }
-  }
 }
-
-
-
 
 void loop()
 {
@@ -403,9 +355,9 @@ void loop()
         String command[MAX_ARRAY];
         byte commandIndex = 0;
         splitString(&input, &command[0], &commandIndex, "<", ">", 1, 0);
-        for(byte i=0; i<commandIndex; i++)
+        for (byte i = 0; i < commandIndex; i++)
         {
-            dbg("Data: "+command[i]);
+            dbg("Data: " + command[i]);
             String subcommand[MAX_ARRAY];
             byte subcommandIndex = 0;
             splitString(&command[i], &subcommand[0], &subcommandIndex, ",", "", 1, 0);
@@ -418,22 +370,24 @@ void loop()
             */
             if (subcommandIndex == 3 && subcommand[0] == "ARM")
             {
-                if(subcommand[1] == "TRUE"){
+                if (subcommand[1] == "TRUE")
+                {
                     arm(true, subcommand[2].toInt());
                 }
-                else if (subcommand[1] == "FALSE"){
+                else if (subcommand[1] == "FALSE")
+                {
                     arm(false, subcommand[2].toInt());
                 }
             }
             else if (subcommandIndex == 1)
             {
-                if(subcommand[0] == "DISARM")
+                if (subcommand[0] == "DISARM")
                     disarm();
-                else if(subcommand[0] == "GET_ALL_STATE")
+                else if (subcommand[0] == "GET_ALL_STATE")
                     getAllState();
-                else if(subcommand[0] == "ALARM")
+                else if (subcommand[0] == "ALARM")
                     sirenOn();
-                else if(subcommand[0] == "CHECK_CONNECTION")
+                else if (subcommand[0] == "CHECK_CONNECTION")
                     startupMessage();
             }
         }
