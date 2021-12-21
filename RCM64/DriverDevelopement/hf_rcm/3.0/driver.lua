@@ -1,4 +1,4 @@
-DRIVER_VERSION = '3.0.1 beta 4'
+DRIVER_VERSION = '3.0.1 beta 5'
 FIRMWARE_VERSION = 'NOT FOUND'
 
 MAX_CON = 3 -- Maximum number of physical connector
@@ -15,6 +15,7 @@ Model = {} -- Contains functions and board type of each CON\
 
 Current = {} -- Contains data for current setting
 Current.ID = {} -- List of IDs used
+Current.INPUT = Properties['INPUT'] or 'NOT USE'
 
 Timer = {} -- Contains all timer
 SEND_COMMAND = {} -- Contains commands waiting to be sent
@@ -306,7 +307,7 @@ function PrintTable(tbl, tbtype)
 			if(IsTableEmpty(v) == false)then
             	result = result..PrintTable(v)
 			else
-				result = result.."\"\""
+				result = result.."{}"
 			end
         elseif type(v) == "boolean" then
             result = result..tostring(v)
@@ -356,12 +357,14 @@ end
 
 -- Splits the string that received from Serial into the specified form
 -- Output: Table of commands
-function SplitString (inputstr, sep)
-	if sep == nil then
-		sep = ","
-	end
+function SplitString (inputstr, type, sep)
+	-- type 1: data contained in "<" and ">"
+	type = type or 1
+	sep = sep or ','
 	local t={}
-	inputstr = string.match(inputstr, "([^<]+)([>$]+)")
+	if(type == 1)then
+	    inputstr = string.match(inputstr, "([^<]+)([>$]+)")
+    end
 	if (inputstr ~= nil) then
 		for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
 			table.insert(t, str)
@@ -595,6 +598,41 @@ function Model.boardInit(model)
 			end
 		end
 	end]]
+
+	Model.DebugProperty()
+	Model.GetCurrent()
+
+	if(IsTableEmpty(Current['ID']) == false)then
+		for k, v in pairs(Current['ID']) do
+
+			-- input
+			if(Current['ID'][k]['TYPE'] == 'INPUT')then
+				-- remove first letter "B"
+				local idbd = tonumber(string.sub(k, 2))
+				C4:AddDynamicBinding(idbd, "CONTROL", true, Current['ID'][k]['ID'], "CONTACT_SENSOR", false, false)
+			end
+
+			-- output
+			if(Current['ID'][k]['TYPE'] == 'OUTPUT')then
+				if(IsTableEmpty(Current[Current['ID'][k]['ID']]) == false)then
+					-- s0: "RCM64V1,MM,CON1,"
+					local s0 = SplitString(Current[Current['ID'][k]['ID']]['DATA'], 0)
+					local s1 = tonumber(Current['ID'][k]['STATE_ID'])
+					-- Channel[RCM64V1][CON1][MM][COMMAND_LABEL]
+					local s2 = Channel[s0[1]][s0[3]][s0[2]]['COMMAND_LABEL'][s1]
+					-- s3: CON1,C6
+					local s3 = SplitString(Current['ID'][k]['ID'], 0)
+					local s4 = string.match(s3[2], '%d*%d')
+					-- remove first letter "B"
+					local idbd = tonumber(string.sub(k, 2))
+					local idname = s0[3]..' - Channel '..s4..' '..s2
+					C4:AddDynamicBinding(idbd, "CONTROL", true, idname, "RELAY", false, false)
+				end
+			end
+
+		end
+	end
+
 	Model.change()
 end
 
@@ -602,6 +640,10 @@ end
 
 -- On Property Changed
 function Model.change()
+
+	-- get current from properties
+	Model.GetCurrent()
+
 	DBG('before change "Current":\n'..PrintTable(Current), 2)
 
 	local model = Properties['Model']
@@ -692,7 +734,9 @@ function Model.change()
 	end
 	
 	DBG('after change "Current":\n'..PrintTable(Current), 2)
-	C4:UpdateProperty('Current', PrintTable(Current))
+	
+	Model.PushCurrent()
+
 end
 
 
@@ -721,6 +765,38 @@ end
 
 
 
+-- sync `Current`
+function Model.GetCurrent()
+	if(Properties['Current'] and Properties['Current'] ~= 'NONE' and Properties['Current'] ~= '')then
+		Current = C4:JsonDecode(Properties['Current'])
+	end
+end	
+
+function Model.PushCurrent()
+	C4:UpdateProperty('Current', PrintTable(Current))
+end
+
+
+
+
+-- show debug property when debug_mode = on
+function Model.DebugProperty()
+	if(DEBUG_MODE == 'ON')then
+		C4:SetPropertyAttribs('Send Command', 0)
+		C4:SetPropertyAttribs('Received Command', 0)
+		C4:SetPropertyAttribs('Current', 0)
+		C4:SetPropertyAttribs('Debug Level', 0)
+		DEBUG_LEVEL = tonumber(string.match(Properties['Debug Level'], '%d*%d')) or 1
+	else
+		C4:SetPropertyAttribs('Send Command', 1)
+		C4:SetPropertyAttribs('Received Command', 1)
+		C4:SetPropertyAttribs('Current', 1)
+		C4:SetPropertyAttribs('Debug Level', 1)
+	end
+end
+
+
+
 
 function OnDriverDestroyed ()
 	DBG("============================", 2)
@@ -744,11 +820,6 @@ function OnDriverInit()
 
 	-- update driver version
 	C4:UpdateProperty ('Driver Version', DRIVER_VERSION)
-
-	-- sync `Current`
-	if(Properties['Current'] and Properties['Current'] ~= 'NONE' and Properties['Current'] ~= '')then
-		Current = C4:JsonDecode(Properties['Current'])
-	end
 
 	-- init dropdown menu
 	--[[
@@ -780,7 +851,7 @@ function OnDriverLateInit ()
 	DBG("============================", 2)
 	DBG("      Driver late init", 2)
 	DBG("============================", 2)
-
+	
 	Model.boardInit(Properties['Model'])
 
 	Timer['SendCommand'] = Model.AddTimer(Timer['SendCommand'], COMMAND_DELAY, 'MILLISECONDS', true)
@@ -826,18 +897,7 @@ function OnPropertyChanged (strProperty)
 		DEBUG_MODE = value
 	end
 
-	if(DEBUG_MODE == 'ON')then
-		C4:SetPropertyAttribs('Send Command', 0)
-		C4:SetPropertyAttribs('Received Command', 0)
-		C4:SetPropertyAttribs('Current', 0)
-		C4:SetPropertyAttribs('Debug Level', 0)
-		DEBUG_LEVEL = tonumber(string.match(Properties['Debug Level'], '%d*%d')) or 1
-	else
-		C4:SetPropertyAttribs('Send Command', 1)
-		C4:SetPropertyAttribs('Received Command', 1)
-		C4:SetPropertyAttribs('Current', 1)
-		C4:SetPropertyAttribs('Debug Level', 1)
-	end
+	Model.DebugProperty()
 
 	for k, v in pairs(Channel[Properties['Model']]) do
 		if(strProperty == k)then

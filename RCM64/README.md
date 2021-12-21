@@ -1,7 +1,7 @@
 # Changes log
 All notable changes to this project will be documented in this file.
 
-## [3.0.1](https://github.com/nhthai173/control4/tree/main/RCM64/Published/All%20version/3.0.1B4) - In Beta
+## [3.0.1](https://github.com/nhthai173/control4/tree/main/RCM64/Published/All%20version/3.0.1B5) - In Beta
 
 #### Fixed
 
