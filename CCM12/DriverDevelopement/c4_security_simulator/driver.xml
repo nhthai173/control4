@@ -251,12 +251,43 @@
 				<readonly>true</readonly>
 				<default>3.0.4</default>
 			</property>
+
+			<property>
+				<name>CMM Config</name>
+				<type>LABEL</type>
+				<default>CMM Config</default>
+			</property>
 			<property>
 				<name>CCM Version</name>
 				<type>STRING</type>
 				<readonly>true</readonly>
-				<default>0.2.2</default>
+				<default>0</default>
 			</property>
+			<property>
+				<name>Firmware Version</name>
+				<type>STRING</type>
+				<readonly>true</readonly>
+				<default>0</default>
+			</property>
+			<property>
+				<name>Check Connection</name>
+				<type>STRING</type>
+				<readonly>true</readonly>
+				<default>NOT CHECK</default>
+			</property>
+			<property>
+				<name>Send To Serial</name>
+				<default>0</default>
+				<type>STRING</type>
+				<readonly>false</readonly>
+			</property>
+			<property>
+				<name>Receive From Serial</name>
+				<default>0</default>
+				<type>STRING</type>
+				<readonly>false</readonly>
+			</property>
+
 		</properties>
 	</config>
 	

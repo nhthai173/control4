@@ -4,6 +4,7 @@
     Copyright 2014 Control4 Corporation. All Rights Reserved.
 ===============================================================================]]
 require "common.c4_driver_declarations"
+require "common.ccm12"
 
 -- Set template version for this file
 if (TEMPLATE_VERSION ~= nil) then
@@ -29,6 +30,8 @@ end
 ===============================================================================]]
 function OnPropertyChanged(sProperty)
 	local propertyValue = Properties[sProperty]
+
+    CCM.OnPropertyChanged(sProperty, propertyValue)
 
 	if (LOG ~= nil and type(LOG) == "table") then
 		LogTrace("OnPropertyChanged(" .. sProperty .. ") changed to: " .. Properties[sProperty])

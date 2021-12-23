@@ -26,3 +26,20 @@ c4securitysim_device.lua -> function ud:HW_AdjustZoneCount(NewZoneCount)
 
 11: CO
 12: Heat & Smoke 
+
+----------------
+
+Bugs
+- On first run
+    + Changed code is no available (default code: 1234)
+
+----------------
+
+To do
+    + add variable to mesage notify
+
+Variable list
+    Last Zone opened
+    Last Zone closed
+    All Zone opened
+    All Zone bypassed

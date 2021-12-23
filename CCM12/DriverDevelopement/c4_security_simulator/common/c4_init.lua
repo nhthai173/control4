@@ -5,6 +5,7 @@
 ===============================================================================]]
 require "common.c4_driver_declarations"
 require "common.c4_property"
+require "common.ccm12"
 
 -- Set template version for this file
 if (TEMPLATE_VERSION ~= nil) then
@@ -28,6 +29,9 @@ end
 function OnDriverInit()
 	gInitializingDriver = true
 	C4:ErrorLog("INIT_CODE: OnDriverInit()")
+
+	-- Call CCM.DriverInit()
+	CCM.DriverInit()
 
 	-- Call all ON_DRIVER_EARLY_INIT functions.
 	for k,v in pairs(ON_DRIVER_EARLY_INIT) do

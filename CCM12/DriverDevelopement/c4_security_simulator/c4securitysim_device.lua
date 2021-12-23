@@ -4,6 +4,7 @@
 
 require "lib.c4_log"
 require "lib.c4_timer"
+require "common.ccm12"
 
 C4_SECURITY_SIM_DUMMY_SERIAL_BINDING_ID = 1
 
@@ -635,6 +636,7 @@ function UPartition.Create(PartitionID)
 			elseif TargArmType == "Home" then
 				if self:HomeZonesReady(DoBypass) then
 					self:SetPartitionState(UPS_ARMED, TargArmType)
+					CCM.PartitionArm(self._pID, 'Home')
 				else
 					self:SendArmFailMessage("Partition Not Ready", "B")
 				end
@@ -654,6 +656,7 @@ function UPartition.Create(PartitionID)
 		if self:IsArmed() or self:InAlarm() then
 			if UserCode == self._ValidUserCode then
 				self:ClearBypass()
+				CCM.PartitionDisarm(self._pID)
 				if self:AllZonesReady() then
 					self:SetPartitionState(UPS_DISARMED_READY, "")
 				else
@@ -697,6 +700,7 @@ function UPartition.Create(PartitionID)
 
 	function upar:OnExitExpired()
 		self:SetPartitionState(UPS_ARMED, self._ArmType)
+		CCM.PartitionArm(self._pID, 'Away')
 	end
 
 
@@ -845,17 +849,17 @@ ZoneTypeDesignations =
 	C4_SECURITY_SIM_ZONE_TYPES.DOOR,		-- Zone 2
 	C4_SECURITY_SIM_ZONE_TYPES.MOTION,		-- Zone 3 
 	C4_SECURITY_SIM_ZONE_TYPES.WINDOW,		-- Zone 4
-	C4_SECURITY_SIM_ZONE_TYPES.SMOKE,		-- Zone 5
+	C4_SECURITY_SIM_ZONE_TYPES.WINDOW,		-- Zone 5
 	C4_SECURITY_SIM_ZONE_TYPES.INTERIOR,	-- Zone 6
 	C4_SECURITY_SIM_ZONE_TYPES.WINDOW,		-- Zone 7
 	C4_SECURITY_SIM_ZONE_TYPES.DOOR,		-- Zone 8
-	C4_SECURITY_SIM_ZONE_TYPES.WATER,		-- Zone 9
-	C4_SECURITY_SIM_ZONE_TYPES.FIRE,		-- Zone 10
-	C4_SECURITY_SIM_ZONE_TYPES.BURGLARY,	-- Zone 11
+	C4_SECURITY_SIM_ZONE_TYPES.BURGLARY,	-- Zone 9
+	C4_SECURITY_SIM_ZONE_TYPES.SMOKE,		-- Zone 10
+	C4_SECURITY_SIM_ZONE_TYPES.FIRE,		-- Zone 11
 	C4_SECURITY_SIM_ZONE_TYPES.MOTION,		-- Zone 12
 	C4_SECURITY_SIM_ZONE_TYPES.INTERIOR,	-- Zone 13
 	C4_SECURITY_SIM_ZONE_TYPES.INTERIOR,	-- Zone 14
-	C4_SECURITY_SIM_ZONE_TYPES.SMOKE,		-- Zone 15
+	C4_SECURITY_SIM_ZONE_TYPES.MOTION,		-- Zone 15
 	C4_SECURITY_SIM_ZONE_TYPES.BURGLARY,	-- Zone 16
 }
 
