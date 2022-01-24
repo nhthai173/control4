@@ -1,4 +1,4 @@
-DRIVER_VERSION = '3.0.1'
+DRIVER_VERSION = '3.0.2 Beta 1'
 FIRMWARE_VERSION = 'NOT FOUND'
 
 MAX_CON = 3 -- Maximum number of physical connector
@@ -18,6 +18,11 @@ Model = {} -- Contains functions and board type of each CON
 Current = {} -- Contains data for current setting
 Current.ID = {} -- List of IDs used
 Current.INPUT = Properties['INPUT'] or 'NOT USE'
+Current.INPUT_TYPE = {} -- List of Input type
+CURRENT_INPUT_STATE = {}
+INPUT_TYPE_LIST = {
+	DIGITAL = 0
+}
 
 Timer = {} -- Contains all timer
 SEND_COMMAND = {} -- Contains commands waiting to be sent
@@ -111,7 +116,19 @@ HARDWARE = {
             I66 = "ZONE9",
             I67 = "ZONE10",
             I68 = "ZONE11",
-            I69 = "ZONE12"
+            I69 = "ZONE12",
+			ZONE1 = 58,
+            ZONE2 = 59,
+            ZONE3 = 60,
+            ZONE4 = 61,
+            ZONE5 = 62,
+            ZONE6 = 63,
+            ZONE7 = 64,
+            ZONE8 = 65,
+            ZONE9 = 66,
+            ZONE10 = 67,
+            ZONE11 = 68,
+            ZONE12 = 69,
 		},
 		DM = {
             STATE = {
@@ -271,6 +288,19 @@ HARDWARE = {
         }
 	}
 }
+
+
+
+
+
+
+
+function INPUT_TYPE_LIST.ANALOG(v)
+	return v
+end
+
+
+
 
 
 
@@ -801,7 +831,8 @@ function Model.change()
 	-- get current from properties
 	Model.GetCurrent()
 
-	DBG('before change "Current":\n'..PrintTable(Current), 2)
+	DBG('before change "Current":', 2)
+	DBG(Current, 2)
 
 	local model = Properties['Model']
 	for k, v in pairs(Channel[model]) do
@@ -955,6 +986,65 @@ end
 
 
 
+--
+function Model.setInputTypeSelect(input)
+	if(input == 'USE')then
+		if(tonumber(FIRMWARE_VERSION) ~= nil and tonumber(FIRMWARE_VERSION) >= 4)then
+			C4:SetPropertyAttribs('Input Setting', 0)
+			C4:SetPropertyAttribs('Select Input Name', 0)
+			C4:SetPropertyAttribs('Select Input Type', 0)
+			local list = {}
+			for _, v in pairs(Channel[Properties['Model']]['INPUT']['USE']) do
+				table.insert(list, v)
+			end
+			C4:UpdatePropertyList('Select Input Name', table.concat(list, ','))
+			Model.getInputType(list[1])
+		end
+	else
+		C4:SetPropertyAttribs('Input Setting', 1)
+		C4:SetPropertyAttribs('Select Input Name', 1)
+		C4:SetPropertyAttribs('Select Input Type', 1)
+	end
+end
+
+
+
+
+--
+function Model.changeInputType(zID, type, sendAfterChange)
+	if(Current['INPUT_TYPE'][zID] ~= type)then
+		Current['INPUT_TYPE'][zID] = type
+		if(sendAfterChange == true)then
+			SendCommand('<SET_PIN,'..HARDWARE[Properties['Model']]['INPUT'][zID]..','..type..'>')
+		end
+	end
+	Model.getInputType(zID)
+end
+
+
+
+
+--
+function Model.getInputType(zID)
+	if(tonumber(FIRMWARE_VERSION) ~= nil and tonumber(FIRMWARE_VERSION) >= 4)then
+		if(Current['INPUT_TYPE'][zID] == nil)then
+			Current['INPUT_TYPE'][zID] = 'DIGITAL'
+		end
+		local list = {}
+		table.insert(list, Current['INPUT_TYPE'][zID])
+		for k, _ in pairs(INPUT_TYPE_LIST) do
+			if(k ~= Current['INPUT_TYPE'][zID])then
+				table.insert(list, k)
+			end
+		end
+		C4:UpdatePropertyList('Select Input Type', table.concat(list, ','))
+		return Current['INPUT_TYPE'][zID]
+	end
+end
+
+
+
+
 function OnDriverDestroyed ()
 	DBG("============================", 2)
 	DBG("      Driver Destroyed", 2)
@@ -1053,6 +1143,14 @@ function OnPropertyChanged (strProperty)
 		COMMAND_DELAY = value
 	elseif (strProperty == 'Debug Mode') then
 		DEBUG_MODE = value
+	elseif (strProperty == 'Select Input Name') then
+		Model.getInputType(value)
+	elseif (strProperty == 'Select Input Type') then
+		Model.changeInputType(Properties['Select Input Name'], value, true)
+	end
+
+	if strProperty == 'INPUT' then
+		Model.setInputTypeSelect(value)
 	end
 
 	Model.DebugProperty()
@@ -1187,10 +1285,12 @@ function Model.ReceivedFromSerial(cmdTbl)
 				Timer['CheckConnection'] = Model.AddTimer (Timer['CheckConnection'], 30, 'SECONDS')
 				if (serialData[3] ~= nil) then
 					FIRMWARE_VERSION = serialData[3]
-					C4:UpdateProperty ('Firmware Version', FIRMWARE_VERSION)
 				else
 					FIRMWARE_VERSION = 'NOT FOUND'
-					C4:UpdateProperty ('Firmware Version', FIRMWARE_VERSION)
+				end
+				C4:UpdateProperty ('Firmware Version', FIRMWARE_VERSION)
+				if(tonumber(serialData[3]) ~= nil and tonumber(serialData[3]) >= 4)then
+					
 				end
 				isValidCommand = true
 			elseif (serialData[1] == Properties['Model'] and serialData[2] ~= nil and serialData[3] ~= nil) then
@@ -1205,11 +1305,32 @@ function Model.ReceivedFromSerial(cmdTbl)
 						local v2con = FIRMWARE_VERSION ~= 'NOT FOUND' and tonumber(FIRMWARE_VERSION) >= 2 and zID == s_zID
 						if (ocon == true or v2con == true) then
 							-- remove first letter `I`
+							CURRENT_INPUT_STATE[s_zID] = serialData[3]
 							local idbd = tonumber(string.sub(k, 2))
 							if(serialData[3] == 'OPEN')then
 								C4:SendToProxy(idbd,"OPENED",{}, "NOTIFY")
 							elseif (serialData[3] == 'CLOSE') then
 								C4:SendToProxy(idbd,"CLOSED",{}, "NOTIFY")
+							end
+							if(tonumber(serialData[3]) ~= nil)then
+								if(tonumber(FIRMWARE_VERSION) >= 4)then
+									-- just for testing
+									if(Current['INPUT_TYPE'][s_zID] == nil or Current['INPUT_TYPE'][s_zID] == "DIGITAL")then
+										Model.changeInputType(s_zID, 'ANALOG', false)
+									end
+									for k, _ in pairs(INPUT_TYPE_LIST) do
+										if(k == Current['INPUT_TYPE'][s_zID])then
+											local aVal = INPUT_TYPE_LIST[k](serialData[3])
+											DBG('Received Analog value: '..aVal, 1)
+											break
+										end
+									end
+									-- send to proxy value
+								else
+									DBG("Analog value only available from firmware 4.0", 1)
+								end
+							else
+								Model.changeInputType(s_zID, 'DIGITAL', false)
 							end
 							-- print zone name
 							if(v2con == true)then

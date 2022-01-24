@@ -6,7 +6,7 @@
   <model>HF-RCM64</model>
   <created>09/24/2021 10:00 AM</created>
   <modified>12/10/2021 03:54 PM</modified>
-  <version>3018</version>
+  <version>3019</version>
   <small image_source="c4z">icons/device_sm.png</small>
   <large image_source="c4z">icons/device_lg.png</large>
   <control>lua_gen</control>
@@ -200,6 +200,23 @@
         <default>NOT USE</default>
         <readonly>false</readonly>
       </property>
+
+      <property>
+        <name>Input Setting</name>
+        <type>LABEL</type>
+        <default>Input Setting</default>
+      </property>
+      <property>
+        <name>Select Input Name</name>
+        <type>DYNAMIC_LIST</type>
+        <readonly>false</readonly>
+      </property>
+      <property>
+        <name>Select Input Type</name>
+        <type>DYNAMIC_LIST</type>
+        <readonly>false</readonly>
+      </property>
+
     </properties>
   </config>
 </devicedata>
