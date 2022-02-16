@@ -1,0 +1,121 @@
+<devicedata>
+  <copyright>Copyright 2022 nht. All rights reserved.</copyright>
+  <creator>nht</creator>
+  <manufacturer>nht</manufacturer>
+  <name>nht - Test Tool</name>
+  <model>1</model>
+  <created>02/16/2022 10:00 AM</created>
+  <modified>02/16/2022 10:00 AM</modified>
+  <version>1</version>
+  <front>{Width=700, Height=336}\x158DVPX777-f.bmp</front>
+  <back>{Width=500, Height=250}\x158dvpx777-b.bmp</back>
+  <control>lua_gen</control>
+  <controlmethod>ip</controlmethod>
+  <driver>DriverWorks</driver>
+  <states />
+  <combo>True</combo>
+  <OnlineCategory>others</OnlineCategory>
+
+	<config>
+    	<script file="driver.lua" />
+    	<documentation file="documentation.rtf" />
+    	<properties>
+			<property>
+				<name>Driver Version</name>
+				<default>1</default>
+				<type>STRING</type>
+				<readonly>true</readonly>
+			</property>
+			<property>
+				<name>Local IP</name>
+				<default>192.168.x.y</default>
+				<type>STRING</type>
+				<readonly>false</readonly>
+			</property>
+			<property>
+				<name>State</name>
+				<default>off</default>
+				<type>STRING</type>
+				<readonly>true</readonly>
+			</property>
+			<property>
+				<name>Bright</name>
+				<default>0</default>
+				<type>STRING</type>
+				<readonly>true</readonly>
+			</property>
+			<property>
+				<name>Hue</name>
+				<default>0</default>
+				<type>STRING</type>
+				<readonly>true</readonly>
+			</property>
+			<property>
+				<name>Effect</name>
+				<type>LIST</type>
+				<items>
+					<item>smooth</item>
+					<item>sudden</item>
+				</items>
+				<default>smooth</default>
+				<readonly>false</readonly>
+			</property>
+			<property>
+				<name>Duration</name>
+				<type>RANGED_INTEGER</type>
+				<minimum>0</minimum>
+				<maximum>10000</maximum>
+				<default>500</default>
+				<readonly>false</readonly>
+				<tooltip>Effect Duration Time (Milliseconds)</tooltip>
+			</property>
+      		<property>
+				<name>Send Command</name>
+				<type>LIST</type>
+					<items>
+						<item>Light On</item>
+						<item>Light Off</item>
+						<item>Random Color</item>
+					</items>
+				<default>Light Off</default>
+				<readonly>false</readonly>
+			</property>
+		</properties>
+  	</config>
+
+	<connections>
+		<connection>
+			<id>1</id>
+			<facing>6</facing>
+			<connectionname>Proxy Input</connectionname>
+			<type>1</type>
+			<consumer>True</consumer>
+			<audiosource>False</audiosource>
+			<videosource>False</videosource>
+			<linelevel>False</linelevel>
+			<hidden>False</hidden>
+			<classes>
+				<class>
+					<classname>EXPAND_INPUT</classname>
+				</class>
+			</classes>
+		</connection>
+		<connection>
+			<id>2</id>
+			<facing>6</facing>
+			<connectionname>Proxy Output</connectionname>
+			<type>1</type>
+			<consumer>False</consumer>
+			<audiosource>False</audiosource>
+			<videosource>False</videosource>
+			<linelevel>False</linelevel>
+			<hidden>False</hidden>
+			<classes>
+				<class>
+					<classname>EXPAND_INPUT</classname>
+				</class>
+			</classes>
+		</connection>
+	</connections>
+
+</devicedata>
