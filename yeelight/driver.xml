@@ -6,7 +6,7 @@
   <model>1</model>
   <created>09/24/2021 10:00 AM</created>
   <modified>09/24/2021 10:00 AM</modified>
-  <version>1</version>
+  <version>4</version>
   <front>{Width=700, Height=336}\x158DVPX777-f.bmp</front>
   <back>{Width=500, Height=250}\x158dvpx777-b.bmp</back>
   <control>lua_gen</control>
@@ -38,6 +38,12 @@
 				<readonly>true</readonly>
 			</property>
       <property>
+				<name>Local IP</name>
+				<default>192.168.x.y</default>
+				<type>STRING</type>
+				<readonly>false</readonly>
+			</property>
+      <property>
 				<name>State</name>
 				<default>off</default>
 				<type>STRING</type>
@@ -49,17 +55,13 @@
 				<type>STRING</type>
 				<readonly>true</readonly>
 			</property>
-			<property>
-				<name>Set Power</name>
-				<type>LIST</type>
-				<items>
-					<item>on</item>
-					<item>off</item>
-          <item>toggle</item>
-				</items>
-				<default>on</default>
-				<readonly>false</readonly>
+      <property>
+				<name>Hue</name>
+				<default>0</default>
+				<type>STRING</type>
+				<readonly>true</readonly>
 			</property>
+
       <property>
 				<name>Effect</name>
 				<type>LIST</type>
@@ -83,11 +85,54 @@
         <name>Send Command</name>
         <type>LIST</type>
 				<items>
-					<item>send</item>
+					<item>Light On</item>
+          <item>Light Off</item>
+          <item>Random Color</item>
 				</items>
-        <default>send</default>
+        <default>Light Off</default>
         <readonly>false</readonly>
       </property>
 		</properties>
+    <commands>
+			<command>
+				<name>setPower</name>
+				<description>Set Light power state</description>
+				<params>
+					<param>
+						<name>state</name>
+						<type>LIST</type>
+						<items>
+							<item>off</item>
+							<item>on</item>
+						</items>
+					</param>
+				</params>
+			</command>
+      <command>
+				<name>setColor</name>
+				<description>Set Light Color</description>
+				<params>
+					<param>
+						<name>color</name>
+						<type>LIST</type>
+						<items>
+              <item>random</item>
+							<item>red</item>
+							<item>orange</item>
+							<item>yellow</item>
+							<item>chartreuse</item>
+							<item>green</item>
+							<item>spring</item>
+							<item>cyan</item>
+							<item>azure</item>
+							<item>blue</item>
+							<item>violet</item>
+							<item>magenta</item>
+							<item>rose</item>
+						</items>
+					</param>
+				</params>
+			</command>
+		</commands>
   </config>
 </devicedata>
