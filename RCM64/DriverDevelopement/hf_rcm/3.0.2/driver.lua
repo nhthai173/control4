@@ -1,4 +1,4 @@
-DRIVER_VERSION = '3.0.2 Beta 1'
+DRIVER_VERSION = '3.0.2 Beta 2'
 FIRMWARE_VERSION = 'NOT FOUND'
 
 MAX_CON = 3 -- Maximum number of physical connector
@@ -1098,12 +1098,10 @@ function OnDriverLateInit ()
 	DBG("============================", 2)
 	DBG("      Driver late init", 2)
 	DBG("============================", 2)
-	
-	Model.boardInit(Properties['Model'])
 
-	Timer['SendCommand'] = Model.AddTimer(Timer['SendCommand'], COMMAND_DELAY, 'MILLISECONDS', true)
-	Timer['ReceivedCommand'] = Model.AddTimer(Timer['ReceivedCommand'], RECEIVED_COMMAND_DELAY, 'MILLISECONDS', true)
-
+	DEBUG_MODE = Properties['Debug Mode'] or 'OFF'
+	DEBUG_LEVEL = tonumber(string.match(Properties['Debug Level'], '%d*%d')) or 1
+	Current.INPUT = Properties['INPUT'] or 'NOT USE'
 	if (FIRMWARE_VERSION ~= Properties['Firmware Version']) then
 		if (Properties['Firmware Version'] ~= "NOT FOUND") then
 			FIRMWARE_VERSION = Properties['Firmware Version']
@@ -1111,6 +1109,12 @@ function OnDriverLateInit ()
 			C4:UpdateProperty ('Firmware Version', FIRMWARE_VERSION)
 		end
 	end
+	Model.setInputTypeSelect(Properties['INPUT'])
+
+	Model.boardInit(Properties['Model'])
+
+	Timer['SendCommand'] = Model.AddTimer(Timer['SendCommand'], COMMAND_DELAY, 'MILLISECONDS', true)
+	Timer['ReceivedCommand'] = Model.AddTimer(Timer['ReceivedCommand'], RECEIVED_COMMAND_DELAY, 'MILLISECONDS', true)
 
 	DBG('Model :', 2)
 	DBG(Model, 2)
@@ -1226,7 +1230,7 @@ function OnTimerExpired (idTimer)
 	elseif(IsTableEmpty(Timer) == false) then
 		-- RM pulse time. ex: ResetChannel57
 		for k, v in pairs(Timer) do
-			if(idTimer == v)then
+			if(string.match(k, 'ResetChannel') == 'ResetChannel' and idTimer == v)then
 				ReceivedFromProxy(tonumber(string.match(k, '%d*%d')), 'NONE', nil)
 				Timer[k] = Model.KillTimer(Timer[k])
 				break
@@ -1391,10 +1395,10 @@ function ReceivedFromProxy (idBinding, strCommand, tParams)
 			local stid = Current['ID'][bid]['STATE_ID']
 			local state = Current[cID]['STATE'][stid]
 			local data = Current[cID]['DATA']
+			local c = string.match(state, '^C%d*%d')
 
 			if(state ~= nil and data ~= nil and strCommand ~= Current[cID]['LAST_SEND'])then
 				if (string.match(data, 'RM') == 'RM') then
-					local c = string.match(state, '^C%d*%d')
 					if (strCommand=='TRIGGER') then
 						if (tParams and tParams['TIME']) then
 							ResetChannel(idBinding, tParams['TIME'])
@@ -1421,11 +1425,22 @@ function ReceivedFromProxy (idBinding, strCommand, tParams)
 				elseif (string.match(data, 'DM') == 'DM' or string.match(data, 'MM') == 'MM') then
 					if(strCommand == "OPEN")then
 						Current[cID]['LAST_SEND'] = "OPEN"
-						local c = string.match(state, '^C%d*%d')
 						SendCommand('<'..data..c..',NONE'..'>')
 					elseif (strCommand == "CLOSE") then
 						Current[cID]['LAST_SEND'] = "CLOSE"
 						SendCommand('<'..data..state..'>')
+					elseif strCommand == 'TRIGGER' then
+						if (tParams and tParams['TIME']) then
+							ResetChannel(idBinding, tParams['TIME'])
+						else
+							-- always pulse 2000ms
+							ResetChannel(idBinding, 2000)
+						end
+						Current[cID]['LAST_SEND'] = "TRIGGER"
+						SendCommand('<'..data..state..'>')
+					elseif strCommand == 'NONE' then
+						Current[cID]['LAST_SEND'] = "NONE"
+						SendCommand('<'..data..c..',NONE'..'>')
 					end
 				end
 			end
