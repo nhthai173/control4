@@ -5,8 +5,8 @@
   <name>Home Flow RCM64</name>
   <model>HF-RCM64</model>
   <created>09/24/2021 10:00 AM</created>
-  <modified>12/10/2021 03:54 PM</modified>
-  <version>3020</version>
+  <modified>02/16/2022 05:14 PM</modified>
+  <version>3021</version>
   <small image_source="c4z">icons/device_sm.png</small>
   <large image_source="c4z">icons/device_lg.png</large>
   <control>lua_gen</control>
@@ -34,6 +34,24 @@
         </class>
       </classes>
     </connection>
+    <!--
+    <connection>
+			<id>2</id>
+			<facing>6</facing>
+			<connectionname>Proxy Output</connectionname>
+			<type>1</type>
+			<consumer>False</consumer>
+			<audiosource>False</audiosource>
+			<videosource>False</videosource>
+			<linelevel>False</linelevel>
+			<hidden>False</hidden>
+			<classes>
+				<class>
+					<classname>EXPAND_INPUT</classname>
+				</class>
+			</classes>
+		</connection>
+    -->
   </connections>
   <config>
     <power_management_method>AlwaysOn</power_management_method>
@@ -212,7 +230,13 @@
         <readonly>false</readonly>
       </property>
       <property>
-        <name>Select Input Type</name>
+        <name>Current Input Type</name>
+        <type>STRING</type>
+        <default>UNKNOW</default>
+        <readonly>true</readonly>
+      </property>
+      <property>
+        <name>Change Input Type To</name>
         <type>DYNAMIC_LIST</type>
         <readonly>false</readonly>
       </property>

@@ -1,9 +1,16 @@
-DRIVER_VERSION = '3.0.2 Beta 2'
+DRIVER_VERSION = '3.0.2 Beta 3'
 FIRMWARE_VERSION = 'NOT FOUND'
 
 MAX_CON = 3 -- Maximum number of physical connector
 START_ID = 2 -- Dynamic Binding id start from
+-- START_ID = 10
 IS_CONNECTED = false -- Is C4 and Arduino working well
+
+-- Connections ID List
+CONIL = {
+	serial = 1,
+	proxy = 2
+}
 
 -- COMMAND_DELAY = Properties['Command Delay Time'] or 100
 COMMAND_DELAY = 100 -- group delay
@@ -19,7 +26,7 @@ Current = {} -- Contains data for current setting
 Current.ID = {} -- List of IDs used
 Current.INPUT = Properties['INPUT'] or 'NOT USE'
 Current.INPUT_TYPE = {} -- List of Input type
-CURRENT_INPUT_STATE = {}
+CURRENT_INPUT_STATE = {} -- currently not use
 INPUT_TYPE_LIST = {
 	DIGITAL = 0
 }
@@ -750,7 +757,7 @@ end
 function SendCommandNGroup()
 	if(SEND_COMMAND[1] ~= nil)then
 		DBG('Send to Serial: '..SEND_COMMAND[1], 1)
-		C4:SendToSerial(1,SEND_COMMAND[1]..'\n')
+		C4:SendToSerial(CONIL.serial,SEND_COMMAND[1]..'\n')
 		table.remove(SEND_COMMAND, 1)
 	else
 		Timer['SendCommandNoGroup'] = Model.KillTimer(Timer['SendCommandNoGroup'])
@@ -762,7 +769,7 @@ end
 -- send to serial
 function SendCMD(cmd)
 	DBG('Send to Serial: '..cmd, 1)
-	C4:SendToSerial(1,cmd..'\n')
+	C4:SendToSerial(CONIL.serial,cmd..'\n')
 end
 
 
@@ -988,23 +995,33 @@ end
 
 --
 function Model.setInputTypeSelect(input)
-	if(input == 'USE')then
-		if(tonumber(FIRMWARE_VERSION) ~= nil and tonumber(FIRMWARE_VERSION) >= 4)then
-			C4:SetPropertyAttribs('Input Setting', 0)
-			C4:SetPropertyAttribs('Select Input Name', 0)
-			C4:SetPropertyAttribs('Select Input Type', 0)
+	if(tonumber(FIRMWARE_VERSION) ~= nil and tonumber(FIRMWARE_VERSION) >= 4)then
+		if(input == 'USE')then
 			local list = {}
 			for _, v in pairs(Channel[Properties['Model']]['INPUT']['USE']) do
 				table.insert(list, v)
 			end
 			C4:UpdatePropertyList('Select Input Name', table.concat(list, ','))
-			Model.getInputType(list[1])
+			Model.getInputType(Properties['Select Input Name'])
+			
+			C4:SetPropertyAttribs('Input Setting', 0)
+			C4:SetPropertyAttribs('Select Input Name', 0)
+			C4:SetPropertyAttribs('Current Input Type', 0)
+			C4:SetPropertyAttribs('Change Input Type To', 0)
+		else
+			C4:SetPropertyAttribs('Input Setting', 1)
+			C4:SetPropertyAttribs('Select Input Name', 1)
+			C4:SetPropertyAttribs('Current Input Type', 1)
+			C4:SetPropertyAttribs('Change Input Type To', 1)
 		end
 	else
+		Current.INPUT_TYPE = {}
 		C4:SetPropertyAttribs('Input Setting', 1)
 		C4:SetPropertyAttribs('Select Input Name', 1)
-		C4:SetPropertyAttribs('Select Input Type', 1)
+		C4:SetPropertyAttribs('Current Input Type', 1)
+		C4:SetPropertyAttribs('Change Input Type To', 1)
 	end
+	Model.PushCurrent()
 end
 
 
@@ -1012,13 +1029,18 @@ end
 
 --
 function Model.changeInputType(zID, type, sendAfterChange)
-	if(Current['INPUT_TYPE'][zID] ~= type)then
-		Current['INPUT_TYPE'][zID] = type
-		if(sendAfterChange == true)then
-			SendCommand('<SET_PIN,'..HARDWARE[Properties['Model']]['INPUT'][zID]..','..type..'>')
+	for k, v in pairs(Channel[Properties['Model']]['INPUT']['USE']) do
+		if zID == v then
+			if(Current['INPUT_TYPE'][zID] ~= type)then
+				Current['INPUT_TYPE'][zID] = type
+				if(sendAfterChange == true)then
+					SendCommand('<SET_PIN,'..HARDWARE[Properties['Model']]['INPUT'][zID]..','..type..'>')
+				end
+			end
+			Model.getInputType(zID)
 		end
 	end
-	Model.getInputType(zID)
+	Model.PushCurrent()
 end
 
 
@@ -1027,19 +1049,25 @@ end
 --
 function Model.getInputType(zID)
 	if(tonumber(FIRMWARE_VERSION) ~= nil and tonumber(FIRMWARE_VERSION) >= 4)then
-		if(Current['INPUT_TYPE'][zID] == nil)then
-			Current['INPUT_TYPE'][zID] = 'DIGITAL'
-		end
-		local list = {}
-		table.insert(list, Current['INPUT_TYPE'][zID])
-		for k, _ in pairs(INPUT_TYPE_LIST) do
-			if(k ~= Current['INPUT_TYPE'][zID])then
-				table.insert(list, k)
+		for k, v in pairs(Channel[Properties['Model']]['INPUT']['USE']) do
+			if zID == v then
+				if(Current['INPUT_TYPE'][zID] == nil)then
+					Current['INPUT_TYPE'][zID] = 'DIGITAL'
+				end
+				local list = {}
+				table.insert(list, Current['INPUT_TYPE'][zID])
+				for k1, v1 in pairs(INPUT_TYPE_LIST) do
+					if(k1 ~= Current['INPUT_TYPE'][zID])then
+						table.insert(list, k1)
+					end
+				end
+				C4:UpdateProperty('Current Input Type', Current['INPUT_TYPE'][zID])
+				C4:UpdatePropertyList('Change Input Type To', table.concat(list, ','))
+				return Current['INPUT_TYPE'][zID]
 			end
 		end
-		C4:UpdatePropertyList('Select Input Type', table.concat(list, ','))
-		return Current['INPUT_TYPE'][zID]
 	end
+	Model.PushCurrent()
 end
 
 
@@ -1141,7 +1169,7 @@ function OnPropertyChanged (strProperty)
 			DBG(C4:JsonDecode(Properties['Current']), 2)
 			DBG("========================", 2)
 		elseif (value and value ~= "") then
-			ReceivedFromSerial(1, value)
+			ReceivedFromSerial(CONIL.serial, value)
 		end
 	elseif (strProperty == 'Command Delay Time') then
 		COMMAND_DELAY = value
@@ -1149,7 +1177,7 @@ function OnPropertyChanged (strProperty)
 		DEBUG_MODE = value
 	elseif (strProperty == 'Select Input Name') then
 		Model.getInputType(value)
-	elseif (strProperty == 'Select Input Type') then
+	elseif (strProperty == 'Change Input Type To') then
 		Model.changeInputType(Properties['Select Input Name'], value, true)
 	end
 
@@ -1293,9 +1321,7 @@ function Model.ReceivedFromSerial(cmdTbl)
 					FIRMWARE_VERSION = 'NOT FOUND'
 				end
 				C4:UpdateProperty ('Firmware Version', FIRMWARE_VERSION)
-				if(tonumber(serialData[3]) ~= nil and tonumber(serialData[3]) >= 4)then
-					
-				end
+				Model.setInputTypeSelect(Properties['INPUT'])
 				isValidCommand = true
 			elseif (serialData[1] == Properties['Model'] and serialData[2] ~= nil and serialData[3] ~= nil) then
 				for k, v in pairs(Current['ID']) do
@@ -1309,36 +1335,36 @@ function Model.ReceivedFromSerial(cmdTbl)
 						local v2con = FIRMWARE_VERSION ~= 'NOT FOUND' and tonumber(FIRMWARE_VERSION) >= 2 and zID == s_zID
 						if (ocon == true or v2con == true) then
 							-- remove first letter `I`
-							CURRENT_INPUT_STATE[s_zID] = serialData[3]
+							CURRENT_INPUT_STATE[zID] = serialData[3]
 							local idbd = tonumber(string.sub(k, 2))
-							if(serialData[3] == 'OPEN')then
+							if (serialData[3] == 'OPEN') then
+								DBG('==> '..zID..' -> '..serialData[3]..' <==', 1)
 								C4:SendToProxy(idbd,"OPENED",{}, "NOTIFY")
+								--C4:SendToProxy(CONIL.proxy, 'ZONE_CHANGED', {zone = zID, state = serialData[3]}, 'NOTIFY')
 							elseif (serialData[3] == 'CLOSE') then
+								DBG('==> '..zID..' -> '..serialData[3]..' <==', 1)
 								C4:SendToProxy(idbd,"CLOSED",{}, "NOTIFY")
+								--C4:SendToProxy(CONIL.proxy, 'ZONE_CHANGED', {zone = zID, state = serialData[3]}, 'NOTIFY')
 							end
-							if(tonumber(serialData[3]) ~= nil)then
+							if(tonumber(serialData[3]) ~= nil and tonumber(serialData[3]) >= 0)then
 								if(tonumber(FIRMWARE_VERSION) >= 4)then
 									-- just for testing
-									if(Current['INPUT_TYPE'][s_zID] == nil or Current['INPUT_TYPE'][s_zID] == "DIGITAL")then
-										Model.changeInputType(s_zID, 'ANALOG', false)
+									if(Current['INPUT_TYPE'][zID] == nil or Current['INPUT_TYPE'][zID] == "DIGITAL")then
+										Model.changeInputType(zID, 'ANALOG', false)
 									end
-									for k, _ in pairs(INPUT_TYPE_LIST) do
-										if(k == Current['INPUT_TYPE'][s_zID])then
-											local aVal = INPUT_TYPE_LIST[k](serialData[3])
-											DBG('Received Analog value: '..aVal, 1)
+									for k1, _ in pairs(INPUT_TYPE_LIST) do
+										if(k1 == Current['INPUT_TYPE'][zID])then
+											local aVal = INPUT_TYPE_LIST[k1](serialData[3])
+											DBG('Received Analog value ==> '..zID..' -> '..aVal..' <==', 1)
 											break
 										end
 									end
-									-- send to proxy value
+									-- send analog value to proxy
 								else
 									DBG("Analog value only available from firmware 4.0", 1)
 								end
 							else
-								Model.changeInputType(s_zID, 'DIGITAL', false)
-							end
-							-- print zone name
-							if(v2con == true)then
-								DBG('Received from Serial as: <'..serialData[1]..','..s_zID..','..serialData[3]..'>', 1)
+								Model.changeInputType(zID, 'DIGITAL', false)
 							end
 							isValidCommand = true
 							break
