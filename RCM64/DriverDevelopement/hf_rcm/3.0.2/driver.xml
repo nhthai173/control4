@@ -5,8 +5,8 @@
   <name>Home Flow RCM64</name>
   <model>HF-RCM64</model>
   <created>09/24/2021 10:00 AM</created>
-  <modified>02/16/2022 05:14 PM</modified>
-  <version>3021</version>
+  <modified>03/09/2022 05:54 PM</modified>
+  <version>3023</version>
   <small image_source="c4z">icons/device_sm.png</small>
   <large image_source="c4z">icons/device_lg.png</large>
   <control>lua_gen</control>
@@ -127,7 +127,7 @@
         <type>STRING</type>
         <readonly>true</readonly>
       </property>
-      <property>
+      <!-- <property>
         <name>Check Connection</name>
         <type>LIST</type>
         <items>
@@ -135,7 +135,7 @@
         </items>
         <default></default>
         <readonly>false</readonly>
-      </property>
+      </property> -->
       
       <!--       
       <property>
@@ -178,6 +178,7 @@
         <items>
           <item>MM</item>
           <item>DM</item>
+          <item>DMV2</item>
           <item>RM</item>
           <item>NOT USE</item>
         </items>
@@ -190,6 +191,7 @@
         <items>
           <item>MM</item>
           <item>DM</item>
+          <item>DMV2</item>
           <item>RM</item>
           <item>NOT USE</item>
         </items>
@@ -202,6 +204,7 @@
         <items>
           <item>MM</item>
           <item>DM</item>
+          <item>DMV2</item>
           <item>RM</item>
           <item>NOT USE</item>
         </items>
@@ -242,5 +245,13 @@
       </property>
 
     </properties>
+    
+    <actions>
+      <action>
+        <name>Check Connection</name>
+        <command>checkConnection</command>
+      </action>               
+    </actions>
+  
   </config>
 </devicedata>
