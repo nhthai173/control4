@@ -161,7 +161,15 @@ function EX_CMDS.setPower(params)
 	end
 end
 
+function EX_CMDS.powerOn(params)
+    YEELIGHT._runMode = 'command'
+    YEELIGHT.set('on')
+end
 
+function EX_CMDS.powerOff(params)
+    YEELIGHT._runMode = 'command'
+    YEELIGHT.set('off')
+end
 
 function ExecuteCommand (strCommand, tParams)
     print("ExecuteCommand function called with : " .. strCommand)
