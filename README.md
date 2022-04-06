@@ -3,21 +3,21 @@
 
 ## RCM64 Driver
 > - [Github](https://github.com/nhthai173/control4/tree/main/RCM64/)
-> - [Documentation](https://nht.netlify.app/driver-doc/rcm64/)
+> - [Documentation](https://nht.netlify.app/doc/driver/rcm64/)
 
 
 ## CCM12 Driver
-> - [Github](https://github.com/nhthai173/control4/tree/main/CCM12/)
-> - [Documentation](https://nht.netlify.app/driver-doc/ccm12/)
+> - [Github](https://github.com/nhthai173/CCM12/)
+> - [Documentation](https://nht.netlify.app/doc/driver/ccm12/)
 
 
-## Sub Driver for LG WebOS TV
-> - [Github](https://github.com/nhthai173/control4/tree/main/LG%20webOSTV/)
+## C4 Mini TV App
+> - [Github](https://github.com/nhthai173/c4_miniTVapp)
+> - [Documentation](https://github.com/nhthai173/c4_miniTVapp/blob/main/dev/README.md)
 
 
 ## Yeelight Driver
-> - [Github](https://github.com/nhthai173/control4/tree/main/RCM64/)
-> - [Documentation](https://nht.netlify.app/driver-doc/yeelight-c4/)
+> - [Github](https://github.com/nhthai173/control4/tree/main/yeelight)
 
 
 ## Icon Scaler
@@ -26,8 +26,8 @@
 
 ---
 
-Add submodule: `git submodule add <remote_url> <destination_folder>`
-Update submodule: `git submodule update --remote`
+- Add submodule: `git submodule add <remote_url> <destination_folder>`
+- Update submodule: `git submodule update --remote`
 
 ---
 
