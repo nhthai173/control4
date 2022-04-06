@@ -1,3 +1,6 @@
 [submodule "CCM12"]
 	path = CCM12
 	url = https://github.com/nhthai173/CCM12
+[submodule "c4_miniTVapp"]
+	path = c4_miniTVapp
+	url = https://github.com/nhthai173/c4_miniTVapp

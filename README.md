@@ -25,4 +25,10 @@
 > [Download](https://github.com/nhthai173/control4/raw/main/c4z%20Image%20Scaler.exe)
 
 ---
+
+Add submodule: `git submodule add <remote_url> <destination_folder>`
+Update submodule: `git submodule update --remote`
+
+---
+
 from nht with ♥
