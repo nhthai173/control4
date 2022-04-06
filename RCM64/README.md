@@ -1,6 +1,12 @@
 # Changes log
 All notable changes to this project will be documented in this file.
 
+## [3.0.2](https://github.com/nhthai173/control4/tree/main/RCM64/Published/All%20version/3.0.2) - 
+
+#### Added
+- Input Type (Digital/Analog)
+- DMV2 Board
+
 ## [3.0.1](https://github.com/nhthai173/control4/tree/main/RCM64/Published/All%20version/3.0.1) - 23/12/2021 14:38
 
 #### Fixed
