@@ -1354,7 +1354,7 @@ end
 
 
 
-function Model.ReceivedFromSerial(cmdTbl)
+function Model. ReceivedFromSerial(cmdTbl)
 	if (IsTableEmpty(cmdTbl) == false) then
 		local sData = {}
 		local isSingle = false
