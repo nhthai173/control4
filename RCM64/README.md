@@ -1,7 +1,11 @@
-# Changes log
-All notable changes to this project will be documented in this file.
+# Changelog
 
-## [3.0.2](https://github.com/nhthai173/control4/tree/main/RCM64/Published/All%20version/3.0.2) - 
+
+## [3.0.3](https://github.com/nhthai173/control4/tree/main/RCM64/Published/All%20version/3.0.3) - 21/04/2022
+#### Added
+- Integrated inputs with the CCM12
+
+## [3.0.2](https://github.com/nhthai173/control4/tree/main/RCM64/Published/All%20version/3.0.2) - 09/03/2022
 
 #### Added
 - Input Type (Digital/Analog)

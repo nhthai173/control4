@@ -1,4 +1,4 @@
-DRIVER_VERSION = '3.0.3 Beta 1'
+DRIVER_VERSION = '3.0.3'
 FIRMWARE_VERSION = 'NOT FOUND'
 
 MAX_CON = 3 -- Maximum number of physical connector
@@ -20,6 +20,7 @@ DEBUG_MODE = Properties['Debug Mode'] or 'OFF' -- Debug mode: ON and OFF
 DEBUG_LEVEL = tonumber(string.match(Properties['Debug Level'], '%d*%d')) or 1 -- Debug level: 1 - 5
 
 Model = {} -- Contains functions and board type of each CON
+M_CMD = {}
 
 Current = {} -- Contains data for current setting
 Current.ID = {} -- List of IDs used
@@ -51,6 +52,12 @@ Channel = {
 				COMMAND = {'OPEN', 'CLOSE', 'STOP'},
 				COMMAND_LABEL = {'- UP', '- DOWN', '- STOP'}
 			},
+			DMV2 = {
+				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8},
+				NUMBER_COMMAND = 3,
+				COMMAND = {'OPEN', 'CLOSE', 'STOP'},
+				COMMAND_LABEL = {'- UP', '- DOWN', '- STOP'}
+			},
 			RM = {
 				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
 				NUMBER_COMMAND = 1,
@@ -71,6 +78,12 @@ Channel = {
 				COMMAND = {'OPEN', 'CLOSE', 'STOP'},
 				COMMAND_LABEL = {'- UP', '- DOWN', '- STOP'}
 			},
+			DMV2 = {
+				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8},
+				NUMBER_COMMAND = 3,
+				COMMAND = {'OPEN', 'CLOSE', 'STOP'},
+				COMMAND_LABEL = {'- UP', '- DOWN', '- STOP'}
+			},
 			RM = {
 				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
 				NUMBER_COMMAND = 1,
@@ -86,6 +99,12 @@ Channel = {
 				COMMAND_LABEL = {'- UP', '- DOWN'}
 			},
 			DM = {
+				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8},
+				NUMBER_COMMAND = 3,
+				COMMAND = {'OPEN', 'CLOSE', 'STOP'},
+				COMMAND_LABEL = {'- UP', '- DOWN', '- STOP'}
+			},
+			DMV2 = {
 				CHANNEL = {1, 2, 3, 4, 5, 6, 7, 8},
 				NUMBER_COMMAND = 3,
 				COMMAND = {'OPEN', 'CLOSE', 'STOP'},
@@ -141,6 +160,50 @@ HARDWARE = {
                 CLOSE = {0, 0},
                 STOP = {0, 1},
                 OPEN = {1, 0},
+                NONE = {1, 1}
+            },
+            RULE = {
+                OPEN = {1, 2},
+                CLOSE = {1, 2},
+                STOP = {1, 2},
+                NONE = {1, 2}
+            },
+            CON1 = {
+                C1 = {31, 29},
+                C2 = {33, 27},
+                C3 = {35, 25},
+                C4 = {37, 23},
+                C5 = {39, 47},
+                C6 = {41, 49},
+                C7 = {43, 51},
+                C8 = {45, 53}
+            },
+            CON3 = {
+                C1 = {52, 22},
+                C2 = {50, 24},
+                C3 = {48, 26},
+                C4 = {46, 28},
+                C5 = {44, 30},
+                C6 = {42, 32},
+                C7 = {40, 34},
+                C8 = {38, 36}
+            },
+            CON2 = {
+                C1 = {5, 6},
+                C2 = {4, 7},
+                C3 = {3, 8},
+                C4 = {2, 9},
+                C5 = {54, 10},
+                C6 = {55, 11},
+                C7 = {56, 12},
+                C8 = {57, 13}
+            }
+        },
+		DMV2 = {
+            STATE = {
+				OPEN = {0, 0},
+				CLOSE = {0, 1},
+				STOP = {1, 0},
                 NONE = {1, 1}
             },
             RULE = {
@@ -927,7 +990,8 @@ function Model.change()
 		end
 	end
 	
-	DBG('after change "Current":\n'..PrintTable(Current), 2)
+	DBG('after change "Current":', 2)
+	DBG(Current, 2)
 	
 	Model.PushCurrent()
 
@@ -1154,8 +1218,6 @@ function OnPropertyChanged (strProperty)
 	if (strProperty == "Model") then
 		CheckConnection()
 		Model.boardInit(value)
-    elseif (strProperty == 'Check Connection') then
-		CheckConnection()
 	elseif (strProperty == 'Send Command') then
 		if (value and value ~= "") then
 			SendCommand(value)
@@ -1476,4 +1538,32 @@ function ReceivedFromProxy (idBinding, strCommand, tParams)
 
 	end
 	
+end
+
+
+
+
+function M_CMD.checkConnection(params)
+	CheckConnection()
+end
+
+
+function ExecuteCommand(strCommand, tParams)
+	if tParams == nil then
+		tParams = {}
+	end
+	local cmd = ''
+	if strCommand == 'LUA_ACTION' then
+		cmd = tParams["ACTION"]	
+	else
+		cmd = strCommand
+	end	
+	
+	if M_CMD[cmd] and type(M_CMD[cmd]) == "function" then
+		DBG('EXECUTE FUNCTION ==> '..cmd..'() <== with params:', 2)
+		DBG(tParams, 2)
+		pcall(M_CMD[cmd], tParams)
+	else
+		DBG('INVALID FUNCTION ==> '..cmd..'() <==', 2)
+	end
 end
