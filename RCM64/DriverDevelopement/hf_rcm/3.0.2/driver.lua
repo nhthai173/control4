@@ -1,4 +1,4 @@
-DRIVER_VERSION = '3.0.2 Beta 5'
+DRIVER_VERSION = '3.0.2'
 FIRMWARE_VERSION = 'NOT FOUND'
 
 MAX_CON = 3 -- Maximum number of physical connector
@@ -1354,7 +1354,7 @@ end
 
 
 
-function Model. ReceivedFromSerial(cmdTbl)
+function Model.ReceivedFromSerial(cmdTbl)
 	if (IsTableEmpty(cmdTbl) == false) then
 		local sData = {}
 		local isSingle = false
