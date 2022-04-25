@@ -1,3 +1,7 @@
+# [Lastest Release](https://github.com/nhthai173/control4/tree/main/RCM64/Published/Stable%20version)
+
+---
+
 # Changelog
 
 ---
