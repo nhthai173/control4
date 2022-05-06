@@ -1,4 +1,4 @@
-DRIVER_VERSION = '3.0.3'
+DRIVER_VERSION = '3.0.3.1'
 FIRMWARE_VERSION = 'NOT FOUND'
 
 MAX_CON = 3 -- Maximum number of physical connector
@@ -1220,7 +1220,8 @@ function OnPropertyChanged (strProperty)
 		Model.boardInit(value)
 	elseif (strProperty == 'Send Command') then
 		if (value and value ~= "") then
-			SendCommand(value)
+			DBG('Send to Serial: '..value, 1)
+			C4:SendToSerial(CONIL.serial, value..'\n')
 		end
 	elseif (strProperty == 'Received Command') then
 		if value == 'json_parse' then

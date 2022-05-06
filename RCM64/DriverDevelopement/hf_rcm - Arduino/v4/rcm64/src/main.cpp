@@ -6,7 +6,7 @@
 #define VERSION "4" // must be integer number
 
 // Temporary array size
-#define MAX_ARRAY 100
+#define MAX_ARRAY 50
 
 // Input state size
 #define INPUT_STATE_SIZE 12
@@ -71,7 +71,7 @@ void DBG(String str, byte level = 0)
  * @param eD end delta
  */
 
-void splitString(String *iStr, String *aStr, byte *aIndex, String sSep, String eSep, byte sD, byte eD)
+void splitString(String *iStr, String *aStr, byte *aIndex, String sSep = "", String eSep = "", byte sD = 0, byte eD = 0)
 {
     if (eSep != "")
     {
@@ -129,9 +129,9 @@ void startupMessage()
  * @brief Message to send on invalid commands
  *
  */
-void invalidCommand()
+void invalidCommand(int number = 0)
 {
-    DBG("Invalid Command !");
+    DBG("Invalid Command [" + String(number) + "]\n");
     startupMessage();
 }
 
@@ -446,7 +446,7 @@ void loop()
         if (commandIndex == 0)
         {
             DBG(input + "\n");
-            invalidCommand();
+            invalidCommand(-2);
         }
 
         for (byte i = 0; i < commandIndex; i++)
@@ -456,7 +456,7 @@ void loop()
             // split by comma
             String arr[MAX_ARRAY];
             byte arrIndex = 0;
-            splitString(&command[i], &arr[0], &arrIndex, ",", "", 1, 0);
+            splitString(&command[i], &arr[0], &arrIndex);
 
             /*
                 <SET_PIN,55,ANALOG>
@@ -521,7 +521,7 @@ void loop()
                             {
                                 String pinsX[MAX_ARRAY];
                                 byte pinsXIndex = 0;
-                                splitString(&pinsY[j], &pinsX[0], &pinsXIndex, ",", "", 1, 0);
+                                splitString(&pinsY[j], &pinsX[0], &pinsXIndex);
                                 for (byte k = 0; k < pinsXIndex; k++)
                                 {
                                     pin[j][k] = pinsX[k].toInt();
@@ -540,7 +540,7 @@ void loop()
                             String actions[MAX_ARRAY];
                             byte actionsIndex = 0;
                             arr[1] = arr[1].substring(1, arr[1].length() - 1);
-                            splitString(&arr[1], &actions[0], &actionsIndex, ",", "", 1, 0);
+                            splitString(&arr[1], &actions[0], &actionsIndex);
 
                             byte pinC = 0;
                             for (byte j = 0; j < actionsIndex; j++)
@@ -565,12 +565,14 @@ void loop()
                         }
                         else
                         {
-                            invalidCommand();
+                            // invalid actions
+                            invalidCommand(2);
                         }
                     }
                     else
                     {
-                        invalidCommand();
+                        // invalid pins
+                        invalidCommand(3);
                     }
                 }
                 else
@@ -596,7 +598,7 @@ void loop()
                 }
                 else
                 {
-                    invalidCommand();
+                    invalidCommand(-1);
                 }
             }
 
