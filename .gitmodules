@@ -4,3 +4,6 @@
 [submodule "c4_miniTVapp"]
 	path = c4_miniTVapp
 	url = https://github.com/nhthai173/c4_miniTVapp
+[submodule "RCM64"]
+	path = RCM64
+	url = https://github.com/nhthai173/rcm64
