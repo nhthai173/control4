@@ -1,4 +1,0 @@
-- Giữ connection khi reboot
-- Giao tiếp với các Board (DM, DMV2, MM, RM)
-- INPUT (Digital/Analog)
-- Thay đổi Input Type

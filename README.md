@@ -2,7 +2,7 @@
 
 
 ## RCM64 Driver
-> - [Github](https://github.com/nhthai173/control4/tree/main/RCM64/)
+> - [Github](https://github.com/nhthai173/rcm64/)
 > - [Documentation](https://nht.netlify.app/doc/driver/rcm64/)
 
 
