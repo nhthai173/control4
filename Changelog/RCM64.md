@@ -2,6 +2,9 @@
     <a href="https://github.com/nhthai173/rcm64/tree/main/Published/All%20version/3.0.4">
         <img src="https://img.shields.io/badge/Lastest%20version-3.0.4-blue">
     </a>
+    <span>
+        <img src="https://img.shields.io/badge/Lastest%20Firmware%20version-5-blue">
+    </span>
     <a href="https://github.com/nhthai173/rcm64/tree/main/Published/All%20version/3.0.4">
         <img src="https://img.shields.io/badge/Stable%20version-3.0.4-blue">
     </a>
@@ -9,12 +12,20 @@
 
 # Changelog
 
+## [3.0.4](https://github.com/nhthai173/rcm64/tree/main/Published/All%20version/3.0.4) - 13/07/2022
+
+> Driver Build: 3040\
+Firmware version: 5
+
+Update Firmware v5
+- Fixed *[#2 Can't receive full command](https://app.clickup.com/t/3805730/PD-1501)*
+
 ## [3.0.4](https://github.com/nhthai173/rcm64/tree/main/Published/All%20version/3.0.4) - 24/06/2022
 
 > Driver Build: 3040\
 Firmware version: 4
 
-- Fixed *Loss of input connection on controller restart*
+- Fixed *[#1 Loss of input connection on controller restart](https://app.clickup.com/t/3805730/PD-1328)*
 
 ## [3.0.3](https://github.com/nhthai173/rcm64/tree/main/Published/All%20version/3.0.3) - 21/04/2022
 
@@ -26,7 +37,7 @@ Firmware version: 4
 ## [3.0.2](https://github.com/nhthai173/rcm64/tree/main/Published/All%20version/3.0.2) - 09/03/2022
 
 **Added**
-- Input Type (Digital/Analog)
+- Can set Input Type (Digital/Analog)
 - DMV2 Board
 
 ## [3.0.1](https://github.com/nhthai173/rcm64/tree/main/Published/All%20version/3.0.1) - 23/12/2021 14:38
