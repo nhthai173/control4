@@ -7,3 +7,9 @@
 [submodule "RCM64"]
 	path = RCM64
 	url = https://github.com/nhthai173/rcm64
+[submodule "HF-Blind"]
+	path = HF-Blind
+	url = https://github.com/nhthai173/hf_blind
+[submodule "Experience Button"]
+	path = Experience Button
+	url = https://github.com/nhthai173/experience_button
